@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -26,4 +28,7 @@ public class Supplier {
     @NotBlank(message = "Không được bỏ trống")
     @Column(name = "ten_ncc")
     private String name;
+
+    @OneToMany(mappedBy = "supplier")
+    private List<Supply> supplyList;
 }
