@@ -1,12 +1,14 @@
 package online.shop.SmartphoneStore.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -29,6 +31,18 @@ public class Supplier {
     @Column(name = "ten_ncc")
     private String name;
 
+    @NotNull
+    @Email(message = "Email không hợp lệ")
+    @NotBlank(message = "Không được bỏ trống")
+    @Column(name = "email")
+    private String email;
+
+    @NotNull
+    @NotBlank(message = "Không được bỏ trống")
+    @Length(max = 10)
+    @Column(name = "so_dien_thoai")
+    private String phone;
+
     @OneToMany(mappedBy = "supplier")
-    private List<Supply> supplyList;
+    private List<Import> supplyList;
 }

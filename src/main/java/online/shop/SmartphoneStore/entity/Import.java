@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(
         name = "cung_cap"
 )
-public class Supply {
+public class Import {
     @Id
     @GeneratedValue
     @Column(name = "ma_cung_cap")
