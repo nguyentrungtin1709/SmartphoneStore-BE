@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -17,6 +19,7 @@ import lombok.Setter;
         name = "hang_san_xuat"
 )
 public class Brand {
+
     @Id
     @GeneratedValue
     @Column(name = "ma_hang")
@@ -26,5 +29,8 @@ public class Brand {
     @NotBlank(message = "Không được bỏ trống")
     @Column(name = "ten_hang")
     private String name;
+
+    @OneToMany(mappedBy = "brand")
+    private List<Smartphone> smartphones;
 
 }

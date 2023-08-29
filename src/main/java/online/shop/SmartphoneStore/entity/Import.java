@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(
-        name = "cung_cap"
+        name = "nhap_hang"
 )
 public class Import {
     @Id
@@ -25,6 +25,10 @@ public class Import {
     @ManyToOne
     @JoinColumn(name = "ma_ncc")
     private Supplier supplier;
+
+    @NotNull
+    @Column(name = "tong_gia_tien")
+    private Double total;
 
     @NotNull
     @CreationTimestamp
