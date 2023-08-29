@@ -3,6 +3,8 @@ package online.shop.SmartphoneStore.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -16,7 +18,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(
-        name = "dien_thoai"
+        name = "dien_thoai",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_sku",
+                        columnNames = "sku"
+                ),
+                @UniqueConstraint(
+                        name = "unique_name",
+                        columnNames = "ten_dien_thoai"
+                )
+        }
 )
 public class Smartphone {
     @Id
@@ -37,8 +49,14 @@ public class Smartphone {
     private Brand brand;
 
     @NotNull
+    @Positive
     @Column(name = "gia_ban")
     private Double price;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "so_luong")
+    private Integer quantityInStock;
 
     @Column(name = "man_hinh")
     @Length(max = 100)

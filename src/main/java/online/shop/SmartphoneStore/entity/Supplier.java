@@ -18,7 +18,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(
-        name = "nha_cung_cap"
+        name = "nha_cung_cap",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_name",
+                        columnNames = "ten_ncc"
+                )
+        }
 )
 public class Supplier {
     @Id

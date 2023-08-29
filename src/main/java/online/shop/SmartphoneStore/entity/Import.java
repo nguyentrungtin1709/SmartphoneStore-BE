@@ -2,10 +2,12 @@ package online.shop.SmartphoneStore.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -19,19 +21,23 @@ import java.time.LocalDateTime;
 public class Import {
     @Id
     @GeneratedValue
-    @Column(name = "ma_cung_cap")
+    @Column(name = "ma_nhap_hang")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "ma_ncc")
+    @JoinColumn(name = "ma_ncc", nullable = false)
     private Supplier supplier;
 
     @NotNull
+    @Positive
     @Column(name = "tong_gia_tien")
     private Double total;
 
+    @OneToMany(mappedBy = "anImport")
+    private List<ImportDetails> importDetails;
+
     @NotNull
     @CreationTimestamp
-    @Column(name = "ngay_cung_cap")
+    @Column(name = "ngay_nhap_hang")
     private LocalDateTime createAt;
 }
