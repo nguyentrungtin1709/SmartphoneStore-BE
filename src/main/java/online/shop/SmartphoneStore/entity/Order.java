@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -67,4 +68,7 @@ public class Order {
     @CreationTimestamp
     @Column(name = "ngay_dat_hang")
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetails> orderItems;
 }

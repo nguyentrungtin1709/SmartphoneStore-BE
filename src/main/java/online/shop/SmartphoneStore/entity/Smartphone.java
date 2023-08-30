@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -108,4 +109,7 @@ public class Smartphone {
     @CreationTimestamp
     @Column(name = "ngay_them")
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "smartphone")
+    private List<OrderDetails> orderDetails;
 }
