@@ -70,5 +70,5 @@ public class Order {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderDetails> orderItems;
+    private List<OrderDetails> orderItemList;
 }

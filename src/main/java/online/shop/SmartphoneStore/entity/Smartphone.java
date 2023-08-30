@@ -111,5 +111,8 @@ public class Smartphone {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "smartphone")
-    private List<OrderDetails> orderDetails;
+    private List<OrderDetails> orderDetailsList;
+
+    @OneToMany(mappedBy = "smartphone")
+    private List<Rating> ratingList;
 }

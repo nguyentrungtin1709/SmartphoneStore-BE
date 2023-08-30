@@ -34,7 +34,7 @@ public class Import {
     private Double total;
 
     @OneToMany(mappedBy = "anImport")
-    private List<ImportDetails> importDetails;
+    private List<ImportDetails> importDetailsList;
 
     @NotNull
     @CreationTimestamp

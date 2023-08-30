@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.hibernate.type.NumericBooleanConverter;
 
 @Setter
 @Getter
@@ -50,4 +51,9 @@ public class OrderDetails {
     @Positive
     @Column(name = "gia_ban")
     private Double price;
+
+    @NotNull
+    @Column(name = "da_danh_gia")
+    @Convert(converter = NumericBooleanConverter.class)
+    private Boolean isRated;
 }

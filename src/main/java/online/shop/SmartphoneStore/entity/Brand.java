@@ -31,6 +31,6 @@ public class Brand {
     private String name;
 
     @OneToMany(mappedBy = "brand")
-    private List<Smartphone> smartphones;
+    private List<Smartphone> smartphoneList;
 
 }
