@@ -39,5 +39,5 @@ public class Import {
     @NotNull
     @CreationTimestamp
     @Column(name = "ngay_nhap_hang")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 }

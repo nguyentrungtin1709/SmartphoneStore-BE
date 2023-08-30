@@ -74,11 +74,14 @@ public class Account implements UserDetails {
     @NotNull
     @CreationTimestamp
     @Column(name = "ngay_tao")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @OneToOne
     @JoinColumn(name = "ma_dia_chi")
     private Address address;
+
+    @OneToMany(mappedBy = "account")
+    private List<Order> orderList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

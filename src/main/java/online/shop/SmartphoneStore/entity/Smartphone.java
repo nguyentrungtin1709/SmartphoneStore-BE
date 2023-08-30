@@ -107,5 +107,5 @@ public class Smartphone {
     @NotNull
     @CreationTimestamp
     @Column(name = "ngay_them")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 }
