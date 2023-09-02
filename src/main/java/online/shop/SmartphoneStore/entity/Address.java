@@ -45,4 +45,11 @@ public class Address {
     @Column(name = "so_nha")
     private String addressDetails;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "ma_tai_khoan",
+            nullable = false
+    )
+    private Account account;
+
 }

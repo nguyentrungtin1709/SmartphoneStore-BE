@@ -76,9 +76,8 @@ public class Account implements UserDetails {
     @Column(name = "ngay_tao")
     private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "ma_dia_chi")
-    private Address address;
+    @OneToMany(mappedBy = "account")
+    private List<Address> addressList;
 
     @OneToMany(mappedBy = "account")
     private List<Order> orderList;
