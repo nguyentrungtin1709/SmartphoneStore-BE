@@ -105,7 +105,6 @@ public class Smartphone {
     @Column(name = "sku")
     private String sku;
 
-    @NotNull
     @CreationTimestamp
     @Column(name = "ngay_them")
     private LocalDateTime createdAt;

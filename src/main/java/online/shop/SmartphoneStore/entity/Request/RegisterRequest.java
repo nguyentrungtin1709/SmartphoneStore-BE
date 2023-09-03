@@ -32,6 +32,5 @@ public class RegisterRequest {
     @NotNull
     @NotBlank(message = "Không được bỏ trống")
     @Length(min = 10, max = 10, message = "Số điện thoại không hợp lệ")
-    @Pattern(regexp = "(84|0[3|5|7|8|9])+([0-9]{8})\\b", message = "Số điện thoại không hợp lệ")
     private String phone;
 }

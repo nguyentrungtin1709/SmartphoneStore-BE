@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -71,15 +72,16 @@ public class Account implements UserDetails {
     @Column(name = "so_dien_thoai")
     private String phone;
 
-    @NotNull
     @CreationTimestamp
     @Column(name = "ngay_tao")
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "account")
+    @JsonIgnore
     private List<Address> addressList;
 
     @OneToMany(mappedBy = "account")
+    @JsonIgnore
     private List<Order> orderList;
 
     @Override

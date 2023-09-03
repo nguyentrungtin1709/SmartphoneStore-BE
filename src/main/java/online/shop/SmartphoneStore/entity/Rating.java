@@ -63,7 +63,6 @@ public class Rating {
     @Column(name = "nhan_xet")
     private String comment;
 
-    @NotNull
     @CreationTimestamp
     @Column(name = "ngay_danh_gia")
     private LocalDateTime createdAt;

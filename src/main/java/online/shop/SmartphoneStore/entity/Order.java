@@ -65,7 +65,7 @@ public class Order {
     @Column(name = "so_nha")
     private String addressDetails;
 
-    @NotNull
+
     @CreationTimestamp
     @Column(name = "ngay_dat_hang")
     private LocalDateTime createdAt;

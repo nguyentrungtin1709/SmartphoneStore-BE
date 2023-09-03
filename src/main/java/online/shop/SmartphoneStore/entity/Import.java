@@ -36,7 +36,6 @@ public class Import {
     @OneToMany(mappedBy = "anImport")
     private List<ImportDetails> importDetailsList;
 
-    @NotNull
     @CreationTimestamp
     @Column(name = "ngay_nhap_hang")
     private LocalDateTime createdAt;
