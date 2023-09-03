@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Service
-public class JWTService {
+public class JsonWebTokenService {
     private final String SECRETKEY = "HLxxGg0GpsydbQBwG9Y3DPF4S7Uc3f2awJ9CcSnSPeo=";
 
     private final SignatureAlgorithm SIGNATUREALGORITHM = SignatureAlgorithm.HS256;
@@ -79,7 +79,7 @@ public class JWTService {
         );
     }
 
-    private Optional<String> extractEmail(String token){
+    public Optional<String> extractEmail(String token){
         try {
             return Optional.ofNullable(
                     extractClaim(token, Claims::getSubject)
@@ -89,7 +89,7 @@ public class JWTService {
         }
     }
 
-    private Optional<Date> extractExpiration(String token){
+    public Optional<Date> extractExpiration(String token){
         try {
             return Optional.ofNullable(
                     extractClaim(token, Claims::getExpiration)
@@ -99,7 +99,7 @@ public class JWTService {
         }
     }
 
-    private boolean isValidToken(String token, Account account){
+    public boolean isValidToken(String token, Account account){
         if (extractEmail(token).isEmpty() && extractExpiration(token).isEmpty()){
             return false;
         }

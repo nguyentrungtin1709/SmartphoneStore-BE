@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.service;
 
+import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
