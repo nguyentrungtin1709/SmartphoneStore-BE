@@ -10,6 +10,7 @@ import online.shop.SmartphoneStore.service.JsonWebTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,7 +24,7 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
 
     private final JsonWebTokenService jsonWebTokenService;
 
-    private final AccountDetailsService accountDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
     public JsonWebTokenFilter(
@@ -31,7 +32,7 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
             AccountDetailsService accountDetailsService
     ) {
         this.jsonWebTokenService = jsonWebTokenService;
-        this.accountDetailsService = accountDetailsService;
+        this.userDetailsService = accountDetailsService;
     }
 
 
@@ -48,7 +49,7 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
         }
         Optional<String> email = jsonWebTokenService.extractEmail(token);
         if (email.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null){
-            Account account = (Account) accountDetailsService
+            Account account = (Account) userDetailsService
                     .loadUserByUsername(
                             email.orElseThrow()
                     );

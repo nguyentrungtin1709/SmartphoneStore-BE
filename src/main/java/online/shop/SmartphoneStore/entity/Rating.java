@@ -3,6 +3,7 @@ package online.shop.SmartphoneStore.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import online.shop.SmartphoneStore.entity.Enum.Star;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;

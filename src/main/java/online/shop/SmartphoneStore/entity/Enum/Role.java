@@ -1,4 +1,4 @@
-package online.shop.SmartphoneStore.entity;
+package online.shop.SmartphoneStore.entity.Enum;
 
 public enum Role {
     CUSTOMER,
