@@ -43,21 +43,20 @@ public class Account implements UserDetails {
     private Long id;
 
     @NotNull
-    @NotBlank(message = "Không được bỏ trống")
+    @NotBlank
     @Length(max = 100)
     @Column(name = "ten_tai_khoan")
     private String name;
 
-
+    @Email
     @NotNull
-    @Email(message = "Email không hợp lệ")
-    @NotBlank(message = "Không được bỏ trống")
+    @NotBlank
     @Column(name = "email")
     private String email;
 
     @NotNull
-    @NotBlank(message = "Không được bỏ trống")
-    @Length(min = 6, message = "Mật khẩu cần có ít nhất 6 kí tự")
+    @NotBlank
+    @Length(min = 6)
     @Column(name = "password")
     private String password;
 
@@ -67,7 +66,7 @@ public class Account implements UserDetails {
     private Role role;
 
     @NotNull
-    @NotBlank(message = "Không được bỏ trống")
+    @NotBlank
     @Length(max = 10)
     @Column(name = "so_dien_thoai")
     private String phone;

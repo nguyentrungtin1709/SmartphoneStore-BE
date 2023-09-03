@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AccountDetailsService implements UserDetailsService {
 
@@ -23,5 +25,13 @@ public class AccountDetailsService implements UserDetailsService {
         return accountRepository
                 .findAccountByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Tài khoản không tồn tại"));
+    }
+
+    public Account createAccount(Account account){
+        return accountRepository.save(account);
+    }
+
+    public Optional<Account> readAccountByEmail(String email){
+        return accountRepository.findAccountByEmail(email);
     }
 }
