@@ -35,4 +35,7 @@ public class AccountDetailsService implements UserDetailsService {
         return accountRepository.findAccountByEmail(email);
     }
 
+    public Optional<Account> readAccountById(Long accountId) {
+        return accountRepository.findById(accountId);
+    }
 }

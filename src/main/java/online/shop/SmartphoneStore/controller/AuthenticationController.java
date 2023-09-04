@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.controller;
 
+import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Request.ChangePasswordRequest;
 import online.shop.SmartphoneStore.entity.Request.JsonWebTokenResponse;
@@ -28,7 +29,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<JsonWebTokenResponse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<JsonWebTokenResponse> register(
+            @Valid @RequestBody RegisterRequest request
+    ){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -38,7 +41,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JsonWebTokenResponse> login(@RequestBody LoginRequest request){
+    public ResponseEntity<JsonWebTokenResponse> login(
+            @Valid @RequestBody LoginRequest request
+    ){
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -50,7 +55,7 @@ public class AuthenticationController {
     @PutMapping("/change-password")
     public ResponseEntity<RedirectView> changePassword(
             @CurrentSecurityContext SecurityContext securityContext,
-            @RequestBody ChangePasswordRequest changePasswordRequest
+            @Valid @RequestBody ChangePasswordRequest changePasswordRequest
     ) {
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
         authenticationService.changePassword(account, changePasswordRequest);
@@ -63,5 +68,14 @@ public class AuthenticationController {
                 );
     }
 
-//    Profile
+    @GetMapping("/profile")
+    public ResponseEntity<Account> readProfile(
+            @CurrentSecurityContext SecurityContext securityContext
+    ){
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(account);
+    }
 }
