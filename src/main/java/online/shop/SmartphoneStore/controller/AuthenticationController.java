@@ -1,6 +1,5 @@
 package online.shop.SmartphoneStore.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Request.ChangePasswordRequest;
 import online.shop.SmartphoneStore.entity.Request.JsonWebTokenResponse;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
@@ -56,6 +54,7 @@ public class AuthenticationController {
     ) {
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
         authenticationService.changePassword(account, changePasswordRequest);
+//        Chú ý ở điểm này
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

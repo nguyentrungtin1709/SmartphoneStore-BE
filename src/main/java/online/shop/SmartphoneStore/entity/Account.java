@@ -59,11 +59,13 @@ public class Account implements UserDetails {
     @NotBlank
     @Length(min = 6)
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @NotNull
     @Enumerated(value = EnumType.ORDINAL)
     @Column(name = "role")
+    @JsonIgnore
     private Role role;
 
     @NotNull
@@ -76,15 +78,16 @@ public class Account implements UserDetails {
     @Column(name = "ngay_tao")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "account")
     @JsonIgnore
+    @OneToMany(mappedBy = "account")
     private List<Address> addressList;
 
-    @OneToMany(mappedBy = "account")
     @JsonIgnore
+    @OneToMany(mappedBy = "account")
     private List<Order> orderList;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(
                 new SimpleGrantedAuthority(
@@ -99,6 +102,7 @@ public class Account implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return email;
     }
