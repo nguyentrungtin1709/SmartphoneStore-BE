@@ -74,6 +74,9 @@ public class Account implements UserDetails {
     @Column(name = "so_dien_thoai")
     private String phone;
 
+    @Column(name = "hinh_anh")
+    private String imageUrl;
+
     @CreationTimestamp
     @Column(name = "ngay_tao")
     private LocalDateTime createdAt;
