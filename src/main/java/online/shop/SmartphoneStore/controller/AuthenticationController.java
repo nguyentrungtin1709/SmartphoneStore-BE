@@ -1,5 +1,8 @@
 package online.shop.SmartphoneStore.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import online.shop.SmartphoneStore.entity.Account;
+import online.shop.SmartphoneStore.entity.Request.ChangePasswordRequest;
 import online.shop.SmartphoneStore.entity.Request.JsonWebTokenResponse;
 import online.shop.SmartphoneStore.entity.Request.LoginRequest;
 import online.shop.SmartphoneStore.entity.Request.RegisterRequest;
@@ -9,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -45,4 +49,18 @@ public class AuthenticationController {
                 );
     }
 
+    @PutMapping("/change-password")
+    public ResponseEntity<RedirectView> changePassword(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @RequestBody ChangePasswordRequest changePasswordRequest
+    ) {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        authenticationService.changePassword(account, changePasswordRequest);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        new RedirectView("/api/v1/auth/login")
+                );
+    }
 }

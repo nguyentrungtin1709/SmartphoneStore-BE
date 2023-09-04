@@ -2,6 +2,7 @@ package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Enum.Role;
+import online.shop.SmartphoneStore.entity.Request.ChangePasswordRequest;
 import online.shop.SmartphoneStore.entity.Request.JsonWebTokenResponse;
 import online.shop.SmartphoneStore.entity.Request.LoginRequest;
 import online.shop.SmartphoneStore.entity.Request.RegisterRequest;
@@ -47,7 +48,7 @@ public class AuthenticationServiceImplement implements AuthenticationService {
                 .phone(request.getPhone())
                 .build();
         String token = jsonWebTokenService.generateToken(
-                accountDetailsService.createAccount(account)
+                accountDetailsService.saveAccount(account)
         );
         return new JsonWebTokenResponse(token);
     }
@@ -68,5 +69,19 @@ public class AuthenticationServiceImplement implements AuthenticationService {
         return new JsonWebTokenResponse(
                 token
         );
+    }
+
+    @Override
+    public void changePassword(Account account, ChangePasswordRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        account.getEmail(),
+                        request.getOldPassword()
+                )
+        );
+        account.setPassword(
+                passwordEncoder.encode(request.getNewPassword())
+        );
+        accountDetailsService.saveAccount(account);
     }
 }

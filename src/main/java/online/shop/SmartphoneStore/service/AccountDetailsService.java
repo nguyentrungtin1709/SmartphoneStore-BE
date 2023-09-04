@@ -27,11 +27,12 @@ public class AccountDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Tài khoản không tồn tại"));
     }
 
-    public Account createAccount(Account account){
+    public Account saveAccount(Account account){
         return accountRepository.save(account);
     }
 
     public Optional<Account> readAccountByEmail(String email){
         return accountRepository.findAccountByEmail(email);
     }
+
 }
