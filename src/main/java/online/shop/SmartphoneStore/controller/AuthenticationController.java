@@ -2,10 +2,10 @@ package online.shop.SmartphoneStore.controller;
 
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
-import online.shop.SmartphoneStore.entity.Request.ChangePasswordRequest;
-import online.shop.SmartphoneStore.entity.Request.JsonWebTokenResponse;
-import online.shop.SmartphoneStore.entity.Request.LoginRequest;
-import online.shop.SmartphoneStore.entity.Request.RegisterRequest;
+import online.shop.SmartphoneStore.entity.api.PasswordChanging;
+import online.shop.SmartphoneStore.entity.api.TokenResponse;
+import online.shop.SmartphoneStore.entity.api.Login;
+import online.shop.SmartphoneStore.entity.api.Register;
 import online.shop.SmartphoneStore.service.AuthenticationServiceImplement;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<JsonWebTokenResponse> register(
-            @Valid @RequestBody RegisterRequest request
+    public ResponseEntity<TokenResponse> register(
+            @Valid @RequestBody Register request
     ){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -41,8 +41,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JsonWebTokenResponse> login(
-            @Valid @RequestBody LoginRequest request
+    public ResponseEntity<TokenResponse> login(
+            @Valid @RequestBody Login request
     ){
         return ResponseEntity
                 .ok()
@@ -52,14 +52,14 @@ public class AuthenticationController {
                 );
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/profile/password")
     public ResponseEntity<RedirectView> changePassword(
             @CurrentSecurityContext SecurityContext securityContext,
-            @Valid @RequestBody ChangePasswordRequest changePasswordRequest
+            @Valid @RequestBody PasswordChanging passwordChanging
     ) {
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
-        authenticationService.changePassword(account, changePasswordRequest);
-//        Chú ý ở điểm này
+        authenticationService.changePassword(account, passwordChanging);
+//      Notice
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

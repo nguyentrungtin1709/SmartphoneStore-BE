@@ -2,17 +2,15 @@ package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Enum.Role;
-import online.shop.SmartphoneStore.entity.Request.ChangePasswordRequest;
-import online.shop.SmartphoneStore.entity.Request.JsonWebTokenResponse;
-import online.shop.SmartphoneStore.entity.Request.LoginRequest;
-import online.shop.SmartphoneStore.entity.Request.RegisterRequest;
+import online.shop.SmartphoneStore.entity.api.PasswordChanging;
+import online.shop.SmartphoneStore.entity.api.TokenResponse;
+import online.shop.SmartphoneStore.entity.api.Login;
+import online.shop.SmartphoneStore.entity.api.Register;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class AuthenticationServiceImplement implements AuthenticationService {
@@ -38,7 +36,7 @@ public class AuthenticationServiceImplement implements AuthenticationService {
     }
 
     @Override
-    public JsonWebTokenResponse register(RegisterRequest request) {
+    public TokenResponse register(Register request) {
         Account account = Account
                 .builder()
                 .name(request.getName())
@@ -52,11 +50,11 @@ public class AuthenticationServiceImplement implements AuthenticationService {
         String token = jsonWebTokenService.generateToken(
                 accountDetailsService.saveAccount(account)
         );
-        return new JsonWebTokenResponse(token);
+        return new TokenResponse(token);
     }
 
     @Override
-    public JsonWebTokenResponse login(LoginRequest request) {
+    public TokenResponse login(Login request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -68,13 +66,13 @@ public class AuthenticationServiceImplement implements AuthenticationService {
                         .readAccountByEmail(request.getEmail())
                         .orElseThrow()
         );
-        return new JsonWebTokenResponse(
+        return new TokenResponse(
                 token
         );
     }
 
     @Override
-    public void changePassword(Account account, ChangePasswordRequest request) {
+    public void changePassword(Account account, PasswordChanging request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         account.getEmail(),

@@ -1,4 +1,4 @@
-package online.shop.SmartphoneStore.entity.Request;
+package online.shop.SmartphoneStore.entity.api;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangePasswordRequest {
+public class PasswordChanging {
     @NotNull
     @NotBlank(message = "Không được bỏ trống")
     @Length(min = 6, message = "Mật khẩu cần có ít nhất 6 kí tự")

@@ -1,4 +1,4 @@
-package online.shop.SmartphoneStore.entity.Request;
+package online.shop.SmartphoneStore.entity.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JsonWebTokenResponse {
+public class TokenResponse {
     private String token;
 }

@@ -1,15 +1,15 @@
 package online.shop.SmartphoneStore.service.Interface;
 
 import online.shop.SmartphoneStore.entity.Account;
-import online.shop.SmartphoneStore.entity.Request.ChangePasswordRequest;
-import online.shop.SmartphoneStore.entity.Request.JsonWebTokenResponse;
-import online.shop.SmartphoneStore.entity.Request.LoginRequest;
-import online.shop.SmartphoneStore.entity.Request.RegisterRequest;
+import online.shop.SmartphoneStore.entity.api.PasswordChanging;
+import online.shop.SmartphoneStore.entity.api.TokenResponse;
+import online.shop.SmartphoneStore.entity.api.Login;
+import online.shop.SmartphoneStore.entity.api.Register;
 
 public interface AuthenticationService {
-    JsonWebTokenResponse register(RegisterRequest request);
+    TokenResponse register(Register request);
 
-    JsonWebTokenResponse login(LoginRequest request);
+    TokenResponse login(Login request);
 
-    void changePassword(Account account, ChangePasswordRequest request);
+    void changePassword(Account account, PasswordChanging request);
 }
