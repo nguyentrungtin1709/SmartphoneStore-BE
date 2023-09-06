@@ -51,8 +51,16 @@ public class FileStorageServiceImplement implements FileStorageService {
     }
 
     @Override
-    public void removeFile(UUID uuid) {
-
+    public void removeFile(UUID uuid) throws IOException {
+        FileStorage fileStorage = fileStorageRepository
+                .findById(uuid)
+                .orElseThrow();
+        Files.deleteIfExists(
+                getFilePath(
+                        fileStorage.getUuid(),
+                        fileStorage.getName()
+                )
+        );
     }
 
     @Override

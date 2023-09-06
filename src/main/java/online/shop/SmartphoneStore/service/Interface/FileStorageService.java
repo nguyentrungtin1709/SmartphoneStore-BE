@@ -10,7 +10,7 @@ public interface FileStorageService {
 
     String uploadFile(MultipartFile file) throws IOException;
 
-    void removeFile(UUID uuid);
+    void removeFile(UUID uuid) throws IOException;
 
     Resource getFile(UUID uuid) throws IOException;
 
