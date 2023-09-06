@@ -4,13 +4,15 @@ import online.shop.SmartphoneStore.entity.FileStorage;
 import online.shop.SmartphoneStore.repository.FileStorageRepository;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -37,18 +39,11 @@ public class FileStorageServiceImplement implements FileStorageService {
                   .size(file.getSize())
                   .build()
         );
-        String fileName = fileStorage
-                .getUuid()
-                .toString()
-                .concat(
-                        getExtensionFromFileName(
-                                Objects.requireNonNull(file.getOriginalFilename())
-                        )
-                );
         file.transferTo(
-            Path.of(
-                    FOLDER_PATH.concat("\\").concat(fileName)
-            )
+                getFilePath(
+                        fileStorage.getUuid(),
+                        file.getOriginalFilename()
+                )
         );
         return RESOURCES_URL.concat(
                 fileStorage.getUuid().toString()
@@ -58,6 +53,29 @@ public class FileStorageServiceImplement implements FileStorageService {
     @Override
     public void removeFile(UUID uuid) {
 
+    }
+
+    @Override
+    public Resource getFile(UUID uuid) throws IOException {
+        FileStorage fileStorage = fileStorageRepository
+                .findById(uuid)
+                .orElseThrow();
+        return new ByteArrayResource(
+                Files.readAllBytes(
+                    getFilePath(fileStorage.getUuid(), fileStorage.getName())
+                ),
+                fileStorage.getContentType()
+        );
+    }
+
+    public Path getFilePath(UUID uuid, String originalFilename){
+        String fileName = uuid.toString()
+                .concat(
+                        getExtensionFromFileName(originalFilename)
+                );
+        return Path.of(
+                FOLDER_PATH.concat("\\").concat(fileName)
+        );
     }
 
     private String getExtensionFromFileName(String name){

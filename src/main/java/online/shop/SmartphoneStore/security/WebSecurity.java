@@ -39,7 +39,8 @@ public class WebSecurity {
                             .requestMatchers(
                                     "/api/v1/home/**",
                                     "/api/v1/products/**",
-                                    "/api/v1/auth/**"
+                                    "/api/v1/auth/**",
+                                    "/api/v1/resources/**"
                             )
                             .permitAll()
                             .requestMatchers("/api/v1/admin/**")
