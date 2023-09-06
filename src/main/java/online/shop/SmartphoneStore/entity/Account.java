@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -75,7 +76,7 @@ public class Account implements UserDetails {
     private String phone;
 
     @Column(name = "hinh_anh")
-    private String imageUrl;
+    private URI imageUrl;
 
     @CreationTimestamp
     @Column(name = "ngay_tao")

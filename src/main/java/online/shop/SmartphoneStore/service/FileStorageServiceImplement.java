@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
@@ -20,7 +23,7 @@ public class FileStorageServiceImplement implements FileStorageService {
 
     private final String FOLDER_PATH = "C:\\Users\\AD\\Desktop\\Image";
 
-    private final String RESOURCES_URL = "/api/v1/resources/";
+    private final String RESOURCES_URL = "http://localhost:8080/api/v1/resources/";
 
     private final FileStorageRepository fileStorageRepository;
 
@@ -30,7 +33,7 @@ public class FileStorageServiceImplement implements FileStorageService {
     }
 
     @Override
-    public String uploadFile(MultipartFile file) throws IOException {
+    public URI uploadFile(MultipartFile file) throws IOException {
         FileStorage fileStorage = fileStorageRepository.save(
           FileStorage
                   .builder()
@@ -45,8 +48,10 @@ public class FileStorageServiceImplement implements FileStorageService {
                         file.getOriginalFilename()
                 )
         );
-        return RESOURCES_URL.concat(
-                fileStorage.getUuid().toString()
+        return URI.create(
+                RESOURCES_URL.concat(
+                    fileStorage.getUuid().toString()
+                )
         );
     }
 
@@ -61,6 +66,7 @@ public class FileStorageServiceImplement implements FileStorageService {
                         fileStorage.getName()
                 )
         );
+        fileStorageRepository.deleteById(uuid);
     }
 
     @Override

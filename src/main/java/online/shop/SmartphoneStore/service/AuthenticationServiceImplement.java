@@ -7,10 +7,16 @@ import online.shop.SmartphoneStore.entity.api.TokenResponse;
 import online.shop.SmartphoneStore.entity.api.Login;
 import online.shop.SmartphoneStore.entity.api.Register;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
+import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.UUID;
 
 @Service
 public class AuthenticationServiceImplement implements AuthenticationService {
@@ -23,16 +29,20 @@ public class AuthenticationServiceImplement implements AuthenticationService {
 
     private final JsonWebTokenService jsonWebTokenService;
 
+    private final FileStorageService fileStorageService;
+
     public AuthenticationServiceImplement(
             AccountDetailsService accountDetailsService,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
-            JsonWebTokenService jsonWebTokenService
+            JsonWebTokenService jsonWebTokenService,
+            FileStorageServiceImplement fileStorageService
     ) {
         this.accountDetailsService = accountDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jsonWebTokenService = jsonWebTokenService;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -84,5 +94,23 @@ public class AuthenticationServiceImplement implements AuthenticationService {
         );
         accountDetailsService.saveAccount(account);
     }
-    
+
+    @Override
+    public Account updateAvatar(String email, MultipartFile file) throws IOException {
+        Account account = accountDetailsService
+                .readAccountByEmail(email)
+                .orElseThrow();
+        if (account.getImageUrl() != null){
+            String path = account.getImageUrl().getPath();
+            UUID uuid = UUID.fromString(
+                    path.substring(
+                            path.lastIndexOf("/") + 1
+                    )
+            );
+            fileStorageService.removeFile(uuid);
+        }
+        URI imageUrl = fileStorageService.uploadFile(file);
+        account.setImageUrl(imageUrl);
+        return accountDetailsService.saveAccount(account);
+    }
 }

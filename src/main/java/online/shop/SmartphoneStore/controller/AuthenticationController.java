@@ -7,7 +7,9 @@ import online.shop.SmartphoneStore.entity.api.TokenResponse;
 import online.shop.SmartphoneStore.entity.api.Login;
 import online.shop.SmartphoneStore.entity.api.Register;
 import online.shop.SmartphoneStore.service.AuthenticationServiceImplement;
+import online.shop.SmartphoneStore.service.FileStorageServiceImplement;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
+import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.io.IOException;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -77,5 +83,22 @@ public class AuthenticationController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(account);
+    }
+
+    @PutMapping("/profile/avatar")
+    public ResponseEntity<Account> updateImage(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @RequestParam("avatar") MultipartFile file
+    ) throws IOException {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        authenticationService.updateAvatar(
+                                account.getEmail(),
+                                file
+                        )
+                );
     }
 }
