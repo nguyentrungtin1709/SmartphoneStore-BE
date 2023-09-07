@@ -2,14 +2,12 @@ package online.shop.SmartphoneStore.controller;
 
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
-import online.shop.SmartphoneStore.entity.api.PasswordChanging;
-import online.shop.SmartphoneStore.entity.api.TokenResponse;
-import online.shop.SmartphoneStore.entity.api.Login;
-import online.shop.SmartphoneStore.entity.api.Register;
+import online.shop.SmartphoneStore.entity.payload.PasswordChanging;
+import online.shop.SmartphoneStore.entity.payload.TokenResponse;
+import online.shop.SmartphoneStore.entity.payload.LoginRequest;
+import online.shop.SmartphoneStore.entity.payload.RegisterRequest;
 import online.shop.SmartphoneStore.service.AuthenticationServiceImplement;
-import online.shop.SmartphoneStore.service.FileStorageServiceImplement;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
-import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
-import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -36,7 +33,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<TokenResponse> register(
-            @Valid @RequestBody Register request
+            @Valid @RequestBody RegisterRequest request
     ){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -48,7 +45,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(
-            @Valid @RequestBody Login request
+            @Valid @RequestBody LoginRequest request
     ){
         return ResponseEntity
                 .ok()

@@ -1,20 +1,18 @@
 package online.shop.SmartphoneStore.service.Interface;
 
 import online.shop.SmartphoneStore.entity.Account;
-import online.shop.SmartphoneStore.entity.api.PasswordChanging;
-import online.shop.SmartphoneStore.entity.api.TokenResponse;
-import online.shop.SmartphoneStore.entity.api.Login;
-import online.shop.SmartphoneStore.entity.api.Register;
+import online.shop.SmartphoneStore.entity.payload.PasswordChanging;
+import online.shop.SmartphoneStore.entity.payload.TokenResponse;
+import online.shop.SmartphoneStore.entity.payload.LoginRequest;
+import online.shop.SmartphoneStore.entity.payload.RegisterRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 
 public interface AuthenticationService {
-    TokenResponse register(Register request);
+    TokenResponse register(RegisterRequest request);
 
-    TokenResponse login(Login request);
+    TokenResponse login(LoginRequest request);
 
     void changePassword(Account account, PasswordChanging request);
 

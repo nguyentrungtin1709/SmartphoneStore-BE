@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import online.shop.SmartphoneStore.entity.Enum.Role;
 import org.hibernate.annotations.CreationTimestamp;
@@ -44,35 +45,28 @@ public class Account implements UserDetails {
     @Column(name = "ma_tai_khoan")
     private Long id;
 
-    @NotNull
     @NotBlank
-    @Length(max = 100)
-    @Column(name = "ten_tai_khoan")
+    @Column(name = "ten_tai_khoan", nullable = false, length = 50)
     private String name;
 
     @Email
-    @NotNull
     @NotBlank
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @NotNull
     @NotBlank
-    @Length(min = 6)
-    @Column(name = "password")
     @JsonIgnore
+    @Length(min = 6)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @NotNull
-    @Enumerated(value = EnumType.ORDINAL)
-    @Column(name = "role")
     @JsonIgnore
+    @Enumerated(value = EnumType.ORDINAL)
+    @Column(name = "role", nullable = false)
     private Role role;
 
-    @NotNull
-    @NotBlank
-    @Length(max = 10)
-    @Column(name = "so_dien_thoai")
+    @Pattern(regexp = "(0[3|5|7|8|9])+([0-9]{8})\\b")
+    @Column(name = "so_dien_thoai", nullable = false, length = 10)
     private String phone;
 
     @Column(name = "hinh_anh")

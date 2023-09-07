@@ -1,4 +1,4 @@
-package online.shop.SmartphoneStore.entity.api;
+package online.shop.SmartphoneStore.entity.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

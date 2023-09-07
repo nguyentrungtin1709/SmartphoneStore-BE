@@ -1,4 +1,4 @@
-package online.shop.SmartphoneStore.entity.api;
+package online.shop.SmartphoneStore.entity.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,18 +11,13 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PasswordChanging {
-    @NotNull
-    @NotBlank(message = "Không được bỏ trống")
+
     @Length(min = 6, message = "Mật khẩu cần có ít nhất 6 kí tự")
     private String oldPassword;
 
-    @NotNull
-    @NotBlank(message = "Không được bỏ trống")
     @Length(min = 6, message = "Mật khẩu cần có ít nhất 6 kí tự")
     private String newPassword;
 
-    @NotNull
-    @NotBlank(message = "Không được bỏ trống")
     @Length(min = 6, message = "Mật khẩu cần có ít nhất 6 kí tự")
     private String confirm;
 }

@@ -2,10 +2,10 @@ package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Enum.Role;
-import online.shop.SmartphoneStore.entity.api.PasswordChanging;
-import online.shop.SmartphoneStore.entity.api.TokenResponse;
-import online.shop.SmartphoneStore.entity.api.Login;
-import online.shop.SmartphoneStore.entity.api.Register;
+import online.shop.SmartphoneStore.entity.payload.PasswordChanging;
+import online.shop.SmartphoneStore.entity.payload.TokenResponse;
+import online.shop.SmartphoneStore.entity.payload.LoginRequest;
+import online.shop.SmartphoneStore.entity.payload.RegisterRequest;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,7 +46,7 @@ public class AuthenticationServiceImplement implements AuthenticationService {
     }
 
     @Override
-    public TokenResponse register(Register request) {
+    public TokenResponse register(RegisterRequest request) {
         Account account = Account
                 .builder()
                 .name(request.getName())
@@ -64,7 +64,7 @@ public class AuthenticationServiceImplement implements AuthenticationService {
     }
 
     @Override
-    public TokenResponse login(Login request) {
+    public TokenResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
