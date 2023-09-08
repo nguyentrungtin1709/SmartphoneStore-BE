@@ -1,6 +1,7 @@
 package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.FileStorage;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.repository.FileStorageRepository;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +71,10 @@ public class FileStorageServiceImplement implements FileStorageService {
     }
 
     @Override
-    public Resource getFile(UUID uuid) throws IOException {
+    public Resource getFile(UUID uuid) throws IOException, DataNotFoundException {
         FileStorage fileStorage = fileStorageRepository
                 .findById(uuid)
-                .orElseThrow();
+                .orElseThrow(() -> new DataNotFoundException("File không tồn tại trong hệ thống"));
         return new ByteArrayResource(
                 Files.readAllBytes(
                     getFilePath(fileStorage.getUuid(), fileStorage.getName())

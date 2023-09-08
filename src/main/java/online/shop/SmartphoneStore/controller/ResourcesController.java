@@ -1,5 +1,7 @@
 package online.shop.SmartphoneStore.controller;
 
+import jakarta.validation.Valid;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.service.FileStorageServiceImplement;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class ResourcesController {
     @GetMapping("/{fileId}")
     public ResponseEntity<Resource> file(
             @PathVariable("fileId") UUID uuid
-    ) throws IOException {
+    ) throws IOException, DataNotFoundException {
         Resource resource = fileStorageService.getFile(uuid);
         String contentType = getContentType(resource.getDescription());
         return ResponseEntity
