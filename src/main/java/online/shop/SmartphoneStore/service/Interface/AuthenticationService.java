@@ -16,5 +16,4 @@ public interface AuthenticationService {
 
     void changePassword(Account account, PasswordChanging request);
 
-    Account updateAvatar(String email, MultipartFile file) throws IOException;
 }

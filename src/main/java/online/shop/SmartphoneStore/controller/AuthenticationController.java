@@ -55,7 +55,7 @@ public class AuthenticationController {
                 );
     }
 
-    @PutMapping("/profile/password")
+    @PutMapping("/password")
     public ResponseEntity<RedirectView> changePassword(
             @CurrentSecurityContext SecurityContext securityContext,
             @Valid @RequestBody PasswordChanging passwordChanging
@@ -71,33 +71,4 @@ public class AuthenticationController {
                 );
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<Account> readProfile(
-            @CurrentSecurityContext SecurityContext securityContext
-    ){
-        Account account = (Account) securityContext.getAuthentication().getPrincipal();
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(account);
-    }
-
-    @PutMapping("/profile/avatar")
-    public ResponseEntity<Account> updateImage(
-            @CurrentSecurityContext SecurityContext securityContext,
-            @RequestParam("avatar") MultipartFile file
-    ) throws IOException {
-        Account account = (Account) securityContext.getAuthentication().getPrincipal();
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(
-                        authenticationService.updateAvatar(
-                                account.getEmail(),
-                                file
-                        )
-                );
-    }
-
-//   Thêm tính năng cập nhật profile ở đây
 }

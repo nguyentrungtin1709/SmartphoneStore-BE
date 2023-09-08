@@ -29,20 +29,16 @@ public class AuthenticationServiceImplement implements AuthenticationService {
 
     private final JsonWebTokenService jsonWebTokenService;
 
-    private final FileStorageService fileStorageService;
-
     public AuthenticationServiceImplement(
             AccountDetailsService accountDetailsService,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
-            JsonWebTokenService jsonWebTokenService,
-            FileStorageServiceImplement fileStorageService
+            JsonWebTokenService jsonWebTokenService
     ) {
         this.accountDetailsService = accountDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jsonWebTokenService = jsonWebTokenService;
-        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -72,13 +68,9 @@ public class AuthenticationServiceImplement implements AuthenticationService {
                 )
         );
         String token = jsonWebTokenService.generateToken(
-                accountDetailsService
-                        .readAccountByEmail(request.getEmail())
-                        .orElseThrow()
+                (Account) accountDetailsService.loadUserByUsername(request.getEmail())
         );
-        return new TokenResponse(
-                token
-        );
+        return new TokenResponse(token);
     }
 
     @Override
@@ -95,22 +87,4 @@ public class AuthenticationServiceImplement implements AuthenticationService {
         accountDetailsService.saveAccount(account);
     }
 
-    @Override
-    public Account updateAvatar(String email, MultipartFile file) throws IOException {
-        Account account = accountDetailsService
-                .readAccountByEmail(email)
-                .orElseThrow();
-        if (account.getImageUrl() != null){
-            String path = account.getImageUrl().getPath();
-            UUID uuid = UUID.fromString(
-                    path.substring(
-                            path.lastIndexOf("/") + 1
-                    )
-            );
-            fileStorageService.removeFile(uuid);
-        }
-        URI imageUrl = fileStorageService.uploadFile(file);
-        account.setImageUrl(imageUrl);
-        return accountDetailsService.saveAccount(account);
-    }
 }

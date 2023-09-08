@@ -37,12 +37,15 @@ public class WebSecurity {
             .authorizeHttpRequests(authorize ->
                     authorize
                             .requestMatchers(
-                                    "/api/v1/home/**",
                                     "/api/v1/products/**",
                                     "/api/v1/auth/**",
                                     "/api/v1/resources/**"
                             )
                             .permitAll()
+                            .requestMatchers(
+                                    "/api/v1/account/**"
+                            )
+                            .hasAnyAuthority(Role.CUSTOMER.name(), Role.ADMIN.name())
                             .requestMatchers("/api/v1/admin/**")
                             .hasAuthority(Role.ADMIN.name())
                             .anyRequest()
