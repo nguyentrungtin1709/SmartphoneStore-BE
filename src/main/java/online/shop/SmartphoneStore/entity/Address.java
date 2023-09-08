@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,27 +22,25 @@ public class Address {
     @Column(name = "ma_dia_chi")
     private Long id;
 
-    @NotNull
     @NotBlank
-    @Column(name = "thanh_pho")
     @Length(max = 50)
+    @Column(name = "thanh_pho", nullable = false)
     private String city;
 
-    @NotNull
     @NotBlank
-    @Column(name = "quan_huyen")
     @Length(max = 50)
+    @Column(name = "quan_huyen", nullable = false)
     private String district;
 
-    @NotNull
+
     @NotBlank
-    @Column(name = "xa_phuong")
     @Length(max = 50)
+    @Column(name = "xa_phuong", nullable = false)
     private String commune;
 
-    @NotNull
-    @NotBlank
-    @Column(name = "so_nha")
+    @NotBlank(message = "Không được bỏ trống")
+    @Length(max = 255, message = "Địa chỉ chứa tối da 255 kí tự")
+    @Column(name = "so_nha", nullable = false)
     private String addressDetails;
 
     @ManyToOne
@@ -49,6 +48,7 @@ public class Address {
             name = "ma_tai_khoan",
             nullable = false
     )
+    @JsonIgnore
     private Account account;
 
 }
