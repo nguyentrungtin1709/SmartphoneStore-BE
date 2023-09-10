@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -34,6 +34,7 @@ public class FileStorageServiceImplement implements FileStorageService {
     }
 
     @Override
+    @Transactional(rollbackFor = {NoSuchFileException.class})
     public URI uploadFile(MultipartFile file) throws IOException {
         FileStorage fileStorage = fileStorageRepository.save(
           FileStorage
