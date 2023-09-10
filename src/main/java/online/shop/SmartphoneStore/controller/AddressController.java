@@ -3,6 +3,7 @@ package online.shop.SmartphoneStore.controller;
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Address;
+import online.shop.SmartphoneStore.exception.custom.AddressOverLimitException;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.service.AddressServiceImplement;
 import online.shop.SmartphoneStore.service.Interface.AddressService;
@@ -31,7 +32,7 @@ public class AddressController {
     public ResponseEntity<Address> saveAddress(
             @CurrentSecurityContext SecurityContext securityContext,
             @Valid @RequestBody Address address
-    ){
+    ) throws AddressOverLimitException {
         address.setAccount(
                 (Account) securityContext.getAuthentication().getPrincipal()
         );

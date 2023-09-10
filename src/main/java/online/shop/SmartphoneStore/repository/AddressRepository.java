@@ -14,6 +14,8 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Optional<Address> findAddressByAccount_IdAndId(Long accountId, Long addressId);
 
+    Integer countAddressByAccount_Id(Long accountId);
+
     void deleteByAccount_IdAndId(Long accountId, Long addressId);
 
 }

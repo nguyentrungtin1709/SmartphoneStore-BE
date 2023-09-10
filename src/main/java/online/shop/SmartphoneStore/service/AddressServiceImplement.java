@@ -2,6 +2,7 @@ package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Address;
+import online.shop.SmartphoneStore.exception.custom.AddressOverLimitException;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.repository.AddressRepository;
 import online.shop.SmartphoneStore.service.Interface.AddressService;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Transactional
 public class AddressServiceImplement implements AddressService {
 
     private final AddressRepository addressRepository;
@@ -24,7 +26,11 @@ public class AddressServiceImplement implements AddressService {
     }
 
     @Override
-    public Address saveAddress(Address address) {
+    public Address saveAddress(Address address) throws AddressOverLimitException {
+        Integer quantity = addressRepository.countAddressByAccount_Id(address.getAccount().getId());
+        if (quantity >= 3){
+            throw new AddressOverLimitException("Tài khoản có tối đa 3 địa chỉ");
+        }
         return addressRepository.save(address);
     }
 
@@ -70,7 +76,7 @@ public class AddressServiceImplement implements AddressService {
     }
 
     @Override
-    @Transactional
+
     public void deleteAddress(Account account, Long addressId) {
         addressRepository.deleteByAccount_IdAndId(
                 account.getId(),

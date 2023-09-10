@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.exception;
 
+import online.shop.SmartphoneStore.exception.custom.AddressOverLimitException;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,4 +46,15 @@ public class RestResponseEntityExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(AddressOverLimitException.class)
+    public ResponseEntity<ExceptionMessage> addressOverLimitException(
+            AddressOverLimitException exception
+    ){
+        return ResponseEntity
+                .badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        new ExceptionMessage(exception.getMessage())
+                );
+    }
 }

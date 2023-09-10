@@ -2,12 +2,13 @@ package online.shop.SmartphoneStore.service.Interface;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Address;
+import online.shop.SmartphoneStore.exception.custom.AddressOverLimitException;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 
 import java.util.List;
 
 public interface AddressService {
-    Address saveAddress(Address address);
+    Address saveAddress(Address address) throws AddressOverLimitException;
 
     List<Address> readAllAddressOfAccount(Account account);
 
