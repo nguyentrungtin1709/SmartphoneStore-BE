@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -48,5 +49,6 @@ public class Supplier {
     private String phone;
 
     @OneToMany(mappedBy = "supplier")
+    @JsonIgnore
     private List<Import> supplyList;
 }
