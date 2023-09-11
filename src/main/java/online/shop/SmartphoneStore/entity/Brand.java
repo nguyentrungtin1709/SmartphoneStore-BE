@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(
-        name = "hang_san_xuat"
+        name = "hang_san_xuat",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_name",
+                        columnNames = "ten_hang"
+                )
+        }
 )
 public class Brand {
 
@@ -25,12 +32,12 @@ public class Brand {
     @Column(name = "ma_hang")
     private Integer id;
 
-    @NotNull
     @NotBlank(message = "Không được bỏ trống")
-    @Column(name = "ten_hang")
+    @Column(name = "ten_hang", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "brand")
+    @JsonIgnore
     private List<Smartphone> smartphoneList;
 
 }
