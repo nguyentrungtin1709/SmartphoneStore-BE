@@ -6,6 +6,7 @@ import online.shop.SmartphoneStore.entity.payload.PasswordChanging;
 import online.shop.SmartphoneStore.entity.payload.TokenResponse;
 import online.shop.SmartphoneStore.entity.payload.LoginRequest;
 import online.shop.SmartphoneStore.entity.payload.RegisterRequest;
+import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AuthenticationServiceImplement implements AuthenticationService {
@@ -42,7 +43,19 @@ public class AuthenticationServiceImplement implements AuthenticationService {
     }
 
     @Override
-    public TokenResponse register(RegisterRequest request) {
+    public TokenResponse register(RegisterRequest request) throws UniqueConstraintException {
+        boolean hasEmail = accountDetailsService.wasRegisteredEmail(request.getEmail());
+        boolean hasPhone = accountDetailsService.wasRegisteredPhone(request.getPhone());
+        if (hasPhone || hasEmail){
+            Map<String, String> columns = new HashMap<>();
+            if (hasPhone){
+                columns.put("phone", "Số điện thoại đã được đăng kí");
+            }
+            if (hasEmail){
+                columns.put("email", "Email đã được đăng kí");
+            }
+            throw new UniqueConstraintException(columns);
+        }
         Account account = Account
                 .builder()
                 .name(request.getName())

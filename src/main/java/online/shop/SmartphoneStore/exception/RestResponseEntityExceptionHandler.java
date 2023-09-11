@@ -2,6 +2,7 @@ package online.shop.SmartphoneStore.exception;
 
 import online.shop.SmartphoneStore.exception.custom.AddressOverLimitException;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
+import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,7 +36,9 @@ public class RestResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<ExceptionMessage> dataNotFoundException(DataNotFoundException exception){
+    public ResponseEntity<ExceptionMessage> dataNotFoundExceptionHandler(
+            DataNotFoundException exception
+    ){
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -47,7 +48,7 @@ public class RestResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AddressOverLimitException.class)
-    public ResponseEntity<ExceptionMessage> addressOverLimitException(
+    public ResponseEntity<ExceptionMessage> addressOverLimitExceptionHandler(
             AddressOverLimitException exception
     ){
         return ResponseEntity
@@ -55,6 +56,18 @@ public class RestResponseEntityExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                         new ExceptionMessage(exception.getMessage())
+                );
+    }
+
+    @ExceptionHandler(UniqueConstraintException.class)
+    public ResponseEntity<Map<String, String>> uniqueConstraintExceptionHandler(
+            UniqueConstraintException exception
+    ){
+        return ResponseEntity
+                .badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        exception.getColumns()
                 );
     }
 }

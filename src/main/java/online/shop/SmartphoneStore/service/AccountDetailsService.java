@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,6 +58,18 @@ public class AccountDetailsService implements UserDetailsService {
         URI imageUrl = fileStorageService.uploadFile(file);
         account.setImageUrl(imageUrl);
         return accountRepository.save(account);
+    }
+
+    public boolean wasRegisteredEmail(String email){
+        return accountRepository
+                .findAccountByEmail(email)
+                .isPresent();
+    }
+
+    public boolean wasRegisteredPhone(String phone){
+        return accountRepository
+                .findAccountByPhone(phone)
+                .isPresent();
     }
 
 }
