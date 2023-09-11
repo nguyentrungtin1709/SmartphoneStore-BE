@@ -38,7 +38,8 @@ public class WebSecurity {
                     authorize
                             .requestMatchers(
                                     "/api/v1/auth/**",
-                                    "/api/v1/resources/**"
+                                    "/api/v1/resources/**",
+                                    "/api/v1/brands/public/**"
                             )
                             .permitAll()
                             .requestMatchers(
@@ -46,7 +47,9 @@ public class WebSecurity {
                                     "/api/v1/address/**"
                             )
                             .hasAnyAuthority(Role.CUSTOMER.name(), Role.ADMIN.name())
-                            .requestMatchers("/api/v1/admin/**")
+                            .requestMatchers(
+                                    "/api/v1/brands/admin/**"
+                            )
                             .hasAuthority(Role.ADMIN.name())
                             .anyRequest()
                             .authenticated()
