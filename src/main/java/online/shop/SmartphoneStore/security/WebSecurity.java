@@ -48,7 +48,8 @@ public class WebSecurity {
                             )
                             .hasAnyAuthority(Role.CUSTOMER.name(), Role.ADMIN.name())
                             .requestMatchers(
-                                    "/api/v1/brands/admin/**"
+                                    "/api/v1/brands/admin/**",
+                                    "/api/v1/suppliers/"
                             )
                             .hasAuthority(Role.ADMIN.name())
                             .anyRequest()

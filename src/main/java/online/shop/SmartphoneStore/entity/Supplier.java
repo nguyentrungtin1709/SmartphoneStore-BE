@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,21 +33,18 @@ public class Supplier {
     @Column(name = "ma_ncc")
     private Integer id;
 
-    @NotNull
     @NotBlank(message = "Không được bỏ trống")
-    @Column(name = "ten_ncc")
+    @Length(max = 50, message = "Tên không quá 50 kí tự")
+    @Column(name = "ten_ncc", nullable = false)
     private String name;
 
-    @NotNull
     @Email(message = "Email không hợp lệ")
     @NotBlank(message = "Không được bỏ trống")
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @NotNull
-    @NotBlank(message = "Không được bỏ trống")
-    @Length(max = 10)
-    @Column(name = "so_dien_thoai")
+    @Pattern(regexp = "(0[3|5|7|8|9])+([0-9]{8})\\b", message = "Số điện thoại không hợp lệ")
+    @Column(name = "so_dien_thoai", length = 10, nullable = false)
     private String phone;
 
     @OneToMany(mappedBy = "supplier")
