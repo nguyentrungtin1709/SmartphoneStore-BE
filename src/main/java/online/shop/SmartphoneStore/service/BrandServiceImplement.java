@@ -66,7 +66,10 @@ public class BrandServiceImplement implements BrandService {
 
     @Override
     @Transactional
-    public void deleteBrandById(Integer brandId) {
+    public void deleteBrandById(Integer brandId) throws DataNotFoundException{
+        brandRepository
+                .findById(brandId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy thương hiệu"));
         brandRepository.deleteById(brandId);
     }
 }

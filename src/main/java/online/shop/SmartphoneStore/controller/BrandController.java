@@ -53,7 +53,7 @@ public class BrandController {
     @DeleteMapping("/admin/{brandId}")
     public ResponseEntity<Object> deleteBrandById(
             @PathVariable("brandId") Integer brandId
-    ){
+    ) throws DataNotFoundException {
         brandService.deleteBrandById(brandId);
         return ResponseEntity
                 .ok()

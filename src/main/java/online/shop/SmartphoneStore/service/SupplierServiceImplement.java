@@ -8,6 +8,7 @@ import online.shop.SmartphoneStore.service.Interface.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -40,16 +41,29 @@ public class SupplierServiceImplement implements SupplierService {
 
     @Override
     public Supplier readSupplierById(Integer supplierId) throws DataNotFoundException {
-        return null;
+        return supplierRepository
+                .findById(supplierId)
+                .orElseThrow(() -> new DataNotFoundException("Nhà cung cấp không tồn tại"));
     }
 
     @Override
     public Supplier updateSupplier(Integer supplierId, Supplier supplier) throws UniqueConstraintException {
-        return null;
+        boolean hasSupplier = supplierRepository
+                .findSupplierByName(supplier.getName())
+                .isPresent();
+        if (hasSupplier){
+            throw new UniqueConstraintException(Map.of("name", "Nhà cung cấp đã tồn tại"));
+        }
+        supplier.setId(supplierId);
+        return supplierRepository.save(supplier);
     }
 
     @Override
-    public void deleteSupplierById(Integer supplierId) {
-
+    @Transactional
+    public void deleteSupplierById(Integer supplierId) throws DataNotFoundException {
+        supplierRepository
+                .findById(supplierId)
+                .orElseThrow(() -> new DataNotFoundException("Nhà cung cấp không tồn tại"));
+        supplierRepository.deleteById(supplierId);
     }
 }

@@ -15,5 +15,5 @@ public interface SupplierService {
 
     Supplier updateSupplier(Integer supplierId, Supplier supplier) throws UniqueConstraintException;
 
-    void deleteSupplierById(Integer supplierId);
+    void deleteSupplierById(Integer supplierId) throws DataNotFoundException;
 }

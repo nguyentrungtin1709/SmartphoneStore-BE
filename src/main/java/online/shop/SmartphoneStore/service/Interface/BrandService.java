@@ -16,6 +16,6 @@ public interface BrandService {
 
     Brand updateBrand(Integer brandId, Brand brand) throws UniqueConstraintException;
 
-    void deleteBrandById(Integer brandId);
+    void deleteBrandById(Integer brandId) throws DataNotFoundException;
 
 }

@@ -2,6 +2,7 @@ package online.shop.SmartphoneStore.controller;
 
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Supplier;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.service.Interface.SupplierService;
 import online.shop.SmartphoneStore.service.SupplierServiceImplement;
@@ -44,5 +45,41 @@ public class SupplierController {
                 .body(
                         supplierService.readAllSuppliers()
                 );
+    }
+
+    @GetMapping("/{supplierId}")
+    public ResponseEntity<Supplier> readSupplierById(
+        @PathVariable("supplierId") Integer supplierId
+    ) throws DataNotFoundException {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        supplierService.readSupplierById(supplierId)
+                );
+    }
+
+    @PutMapping("/{supplierId}")
+    public ResponseEntity<Supplier> updateSupplier(
+            @PathVariable("supplierId") Integer supplierId,
+            @Valid @RequestBody Supplier supplier
+    ) throws UniqueConstraintException {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        supplierService.updateSupplier(supplierId, supplier)
+                );
+    }
+
+    @DeleteMapping("/{supplierId}")
+    public ResponseEntity<Object> deleteSupplierById(
+            @PathVariable("supplierId") Integer supplierId
+    ) throws DataNotFoundException {
+        supplierService.deleteSupplierById(supplierId);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(null);
     }
 }
