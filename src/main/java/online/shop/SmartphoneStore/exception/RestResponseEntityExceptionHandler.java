@@ -1,5 +1,7 @@
 package online.shop.SmartphoneStore.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import online.shop.SmartphoneStore.exception.custom.AddressOverLimitException;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
@@ -69,5 +71,25 @@ public class RestResponseEntityExceptionHandler {
                 .body(
                         exception.getColumns()
                 );
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> constraintViolationException(
+            ConstraintViolationException exception
+    ){
+        Map<String, String> errors = exception
+                .getConstraintViolations()
+                .stream()
+                .collect(Collectors.toMap(
+                        (e) -> {
+                            int index = e.getPropertyPath().toString().indexOf(".");
+                            return e.getPropertyPath().toString().substring(index + 1);
+                        },
+                        ConstraintViolation::getMessage
+                ));
+        return ResponseEntity
+                .badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(errors);
     }
 }

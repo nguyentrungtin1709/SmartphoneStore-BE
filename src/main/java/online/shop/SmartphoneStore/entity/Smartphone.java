@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,9 +39,8 @@ public class Smartphone {
     @Column(name = "ma_dien_thoai")
     private Long id;
 
-    @NotNull
-    @NotBlank(message = "Không được bỏ trống")
-    @Column(name = "ten_dien_thoai")
+    @NotBlank
+    @Column(name = "ten_dien_thoai", nullable = false)
     private String name;
 
     @ManyToOne
@@ -49,69 +50,59 @@ public class Smartphone {
     )
     private Brand brand;
 
-    @NotNull
+
     @Positive
-    @Column(name = "gia_ban")
+    @Column(name = "gia_ban", nullable = false)
     private Double price;
 
-    @NotNull
+
     @PositiveOrZero
-    @Column(name = "so_luong")
+    @Column(name = "so_luong", nullable = false)
     private Integer quantityInStock;
 
-    @Column(name = "man_hinh")
-    @Length(max = 100)
+    @Column(name = "man_hinh", length = 100)
     private String screen;
 
-    @Column(name = "he_dieu_hanh")
-    @Length(max = 100)
+    @Column(name = "he_dieu_hanh", length = 100)
     private String operatingSystem;
 
-    @Column(name = "camera_sau")
-    @Length(max = 100)
+    @Column(name = "camera_sau", length = 100)
     private String rearCamera;
 
-    @Column(name = "camera_truoc")
-    @Length(max = 100)
+    @Column(name = "camera_truoc", length = 100)
     private String frontCamera;
 
-    @Column(name = "chip")
-    @Length(max = 100)
+    @Column(name = "chip", length = 100)
     private String chip;
 
-    @Column(name = "ram")
-    @Length(max = 100)
+    @Column(name = "ram", length = 100)
     private String ram;
 
-    @Column(name = "dung_luong")
-    @Length(max = 100)
+    @Column(name = "dung_luong", length = 100)
     private String storageCapacity;
 
-    @Column(name = "sim")
-    @Length(max = 100)
+    @Column(name = "sim", length = 100)
     private String sim;
 
-    @Column(name = "pin_sac")
-    @Length(max = 100)
+    @Column(name = "pin_sac", length = 100)
     private String pin;
 
-    @NotNull
-    @NotBlank(message = "Không được bỏ trống")
     @Column(name = "hinh_anh")
-    private String imageUrl;
+    private URI imageUrl;
 
-    @NotNull
-    @NotBlank(message = "Không được bỏ trống")
-    @Column(name = "sku")
+    @NotBlank
+    @Column(name = "sku", nullable = false)
     private String sku;
 
     @CreationTimestamp
     @Column(name = "ngay_them")
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "smartphone")
     private List<OrderDetails> orderDetailsList;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "smartphone")
     private List<Rating> ratingList;
 }
