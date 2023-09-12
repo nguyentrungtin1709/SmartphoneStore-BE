@@ -39,7 +39,8 @@ public class WebSecurity {
                             .requestMatchers(
                                     "/api/v1/auth/**",
                                     "/api/v1/resources/**",
-                                    "/api/v1/brands/public/**"
+                                    "/api/v1/brands/public/**",
+                                    "/api/v1/smartphones/public"
                             )
                             .permitAll()
                             .requestMatchers(
@@ -49,7 +50,8 @@ public class WebSecurity {
                             .hasAnyAuthority(Role.CUSTOMER.name(), Role.ADMIN.name())
                             .requestMatchers(
                                     "/api/v1/brands/admin/**",
-                                    "/api/v1/suppliers/"
+                                    "/api/v1/suppliers/",
+                                    "/api/v1/smartphones/admin"
                             )
                             .hasAuthority(Role.ADMIN.name())
                             .anyRequest()
