@@ -6,9 +6,6 @@ import online.shop.SmartphoneStore.entity.payload.TokenResponse;
 import online.shop.SmartphoneStore.entity.payload.LoginRequest;
 import online.shop.SmartphoneStore.entity.payload.RegisterRequest;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 public interface AuthenticationService {
     TokenResponse register(RegisterRequest request) throws UniqueConstraintException;

@@ -1,4 +1,4 @@
-package online.shop.SmartphoneStore.controller;
+package online.shop.SmartphoneStore.controller.admin;
 
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Supplier;
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/suppliers")
-public class SupplierController {
+@RequestMapping("/api/v1/admin/suppliers")
+public class AdminSupplierController {
 
     private final SupplierService supplierService;
 
     @Autowired
-    public SupplierController(SupplierServiceImplement supplierService) {
+    public AdminSupplierController(SupplierServiceImplement supplierService) {
         this.supplierService = supplierService;
     }
 
@@ -59,6 +59,7 @@ public class SupplierController {
                 );
     }
 
+//    Có một lỗi ngiêm trọng ở đây
     @PutMapping("/{supplierId}")
     public ResponseEntity<Supplier> updateSupplier(
             @PathVariable("supplierId") Integer supplierId,

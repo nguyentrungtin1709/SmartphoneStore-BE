@@ -1,6 +1,5 @@
 package online.shop.SmartphoneStore.controller;
 
-import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.service.FileStorageServiceImplement;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;

@@ -1,27 +1,38 @@
 package online.shop.SmartphoneStore.controller;
 
+import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
+import online.shop.SmartphoneStore.entity.payload.PasswordChanging;
 import online.shop.SmartphoneStore.service.AccountDetailsService;
+import online.shop.SmartphoneStore.service.AuthenticationServiceImplement;
+import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/v1/account")
-public class AccountController {
+@RequestMapping("/api/v1/account/profile")
+public class AccountProfileController {
 
     private final AccountDetailsService accountDetailsService;
 
-    public AccountController(AccountDetailsService accountDetailsService) {
+    private final AuthenticationService authenticationService;
+
+    public AccountProfileController(
+            AccountDetailsService accountDetailsService,
+            AuthenticationServiceImplement authenticationService
+    ) {
         this.accountDetailsService = accountDetailsService;
+        this.authenticationService = authenticationService;
     }
 
-    @GetMapping("/profile")
+    @GetMapping
     public ResponseEntity<Account> readProfile(
             @CurrentSecurityContext SecurityContext securityContext
     ){
@@ -32,7 +43,7 @@ public class AccountController {
                 .body(account);
     }
 
-    @PutMapping("/profile/avatar")
+    @PutMapping("/avatar")
     public ResponseEntity<Account> updateImage(
             @CurrentSecurityContext SecurityContext securityContext,
             @RequestParam("avatar") MultipartFile file
@@ -46,6 +57,22 @@ public class AccountController {
                                 account.getEmail(),
                                 file
                         )
+                );
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<RedirectView> changePassword(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @Valid @RequestBody PasswordChanging passwordChanging
+    ) {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        authenticationService.changePassword(account, passwordChanging);
+//      Notice
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        new RedirectView("/api/v1/auth/login")
                 );
     }
 }

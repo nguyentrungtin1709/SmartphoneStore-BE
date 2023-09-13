@@ -1,4 +1,4 @@
-package online.shop.SmartphoneStore.controller;
+package online.shop.SmartphoneStore.controller.customer;
 
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/address")
-public class AddressController {
+@RequestMapping("/api/v1/account/address")
+public class AccountAddressController {
 
     private final AddressService addressService;
 
     @Autowired
-    public AddressController(AddressServiceImplement addressService) {
+    public AccountAddressController(AddressServiceImplement addressService) {
         this.addressService = addressService;
     }
 
