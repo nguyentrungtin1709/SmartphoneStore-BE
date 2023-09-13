@@ -1,7 +1,7 @@
 package online.shop.SmartphoneStore.service.Interface;
 
-import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Smartphone;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,4 +14,13 @@ public interface SmartphoneService {
             throws UniqueConstraintException, IOException;
 
     Page<Smartphone> readSmartphones(Integer page);
+
+    Smartphone readSmartphoneById(Long smartphoneId) throws DataNotFoundException;
+
+    void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException;
+
+    Smartphone updateImage(Long smartphoneId, MultipartFile image)
+            throws DataNotFoundException, IOException;
+
+    Smartphone updateInfo(Long smartphoneId, Smartphone smartphone) throws DataNotFoundException;
 }

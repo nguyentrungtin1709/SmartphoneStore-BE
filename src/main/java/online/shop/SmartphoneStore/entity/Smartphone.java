@@ -39,7 +39,7 @@ public class Smartphone {
     @Column(name = "ma_dien_thoai")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Không được bỏ trống")
     @Column(name = "ten_dien_thoai", nullable = false)
     private String name;
 
@@ -51,46 +51,58 @@ public class Smartphone {
     private Brand brand;
 
 
-    @Positive
-    @Column(name = "gia_ban", nullable = false)
+    @NotNull(message = "Không được bỏ trống")
+    @Positive(message = "Giá bán cần lớn hơn 0")
+    @Column(name = "gia_ban")
     private Double price;
 
 
-    @PositiveOrZero
-    @Column(name = "so_luong", nullable = false)
+
+    @NotNull(message = "Không được bỏ trống")
+    @PositiveOrZero(message = "Số lượng cần lớn hơn hoặc bằng 0")
+    @Column(name = "so_luong")
     private Integer quantityInStock;
 
-    @Column(name = "man_hinh", length = 100)
+    @Column(name = "man_hinh")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String screen;
 
-    @Column(name = "he_dieu_hanh", length = 100)
+    @Column(name = "he_dieu_hanh")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String operatingSystem;
 
-    @Column(name = "camera_sau", length = 100)
+    @Column(name = "camera_sau")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String rearCamera;
 
-    @Column(name = "camera_truoc", length = 100)
+    @Column(name = "camera_truoc")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String frontCamera;
 
-    @Column(name = "chip", length = 100)
+    @Column(name = "chip")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String chip;
 
-    @Column(name = "ram", length = 100)
+    @Column(name = "ram")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String ram;
 
-    @Column(name = "dung_luong", length = 100)
+    @Column(name = "dung_luong")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String storageCapacity;
 
-    @Column(name = "sim", length = 100)
+    @Column(name = "sim")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String sim;
 
-    @Column(name = "pin_sac", length = 100)
+    @Column(name = "pin_sac")
+    @Length(max = 100, message = "Chứa tối đa không quá 100 ký tự")
     private String pin;
 
     @Column(name = "hinh_anh")
     private URI imageUrl;
 
-    @NotBlank
+    @NotBlank(message = "Không được bỏ trống")
     @Column(name = "sku", nullable = false)
     private String sku;
 

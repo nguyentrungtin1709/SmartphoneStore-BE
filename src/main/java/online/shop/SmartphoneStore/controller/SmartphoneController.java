@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import online.shop.SmartphoneStore.entity.Brand;
 import online.shop.SmartphoneStore.entity.Smartphone;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.service.Interface.SmartphoneService;
 import online.shop.SmartphoneStore.service.SmartphoneServiceImplement;
@@ -82,6 +83,43 @@ public class SmartphoneController {
                 );
     }
 
+    @DeleteMapping("/admin/{smartphoneId}")
+    public ResponseEntity<Object> deleteSmartphoneById(
+            @PathVariable("smartphoneId") Long smartphoneId
+    ) throws DataNotFoundException {
+        smartphoneService.deleteSmartphoneById(smartphoneId);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(null);
+    }
+
+    @PutMapping("/admin/{smartphoneId}/image")
+    public ResponseEntity<Smartphone> updateImage(
+            @PathVariable("smartphoneId") Long smartphoneId,
+            @RequestParam("image") MultipartFile image
+    ) throws DataNotFoundException, IOException {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        smartphoneService.updateImage(smartphoneId, image)
+                );
+    }
+
+    @PutMapping("/admin/{smartphoneId}/info")
+    public ResponseEntity<Smartphone> updateInfo(
+            @PathVariable("smartphoneId") Long smartphoneId,
+            @Valid @RequestBody Smartphone smartphone
+    ) throws DataNotFoundException {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        smartphoneService.updateInfo(smartphoneId, smartphone)
+                );
+    }
+
     @GetMapping("/public")
     public ResponseEntity<Page<Smartphone>> readSmartphones(
             @RequestParam(value = "p", defaultValue = "0") Integer page
@@ -91,6 +129,18 @@ public class SmartphoneController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                         smartphoneService.readSmartphones(page)
+                );
+    }
+
+    @GetMapping("/public/{smartphoneId}")
+    public ResponseEntity<Smartphone> readSmartphoneById(
+            @PathVariable("smartphoneId") Long smartphoneId
+    ) throws DataNotFoundException {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        smartphoneService.readSmartphoneById(smartphoneId)
                 );
     }
 
