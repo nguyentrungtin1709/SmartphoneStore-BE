@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.service;
 
+import online.shop.SmartphoneStore.entity.Enum.Sort;
 import online.shop.SmartphoneStore.entity.Smartphone;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -26,17 +28,13 @@ public class SmartphoneServiceImplement implements SmartphoneService {
 
     private final FileStorageService fileStorageService;
 
-    private final BrandService brandService;
-
     @Autowired
     public SmartphoneServiceImplement(
             SmartphoneRepository smartphoneRepository,
-            FileStorageServiceImplement fileStorageService,
-            BrandServiceImplement brandService
+            FileStorageServiceImplement fileStorageService
     ) {
         this.smartphoneRepository = smartphoneRepository;
         this.fileStorageService = fileStorageService;
-        this.brandService = brandService;
     }
 
 
@@ -45,8 +43,8 @@ public class SmartphoneServiceImplement implements SmartphoneService {
             Smartphone smartphone,
             MultipartFile file
     ) throws UniqueConstraintException, IOException {
-        boolean hasName = smartphoneRepository.findSmartphoneByName(smartphone.getName()).isPresent();
-        boolean hasSku = smartphoneRepository.findSmartphoneBySku(smartphone.getSku()).isPresent();
+        boolean hasName = smartphoneRepository.existsSmartphoneByName(smartphone.getName());
+        boolean hasSku = smartphoneRepository.existsSmartphoneBySku(smartphone.getSku());
         if (hasName || hasSku){
             Map<String, String> columns = new HashMap<>();
             if (hasName){
@@ -65,8 +63,56 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
-    public Page<Smartphone> readSmartphones(Integer page) {
-        return smartphoneRepository.findAll(PageRequest.of(page, 10));
+    public Page<Smartphone> readSmartphones(
+            Integer page,
+            Integer brandId,
+            Integer minPrice,
+            Integer maxPrice,
+            Sort sortType
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, 12);
+        if (sortType == Sort.INCREASE){
+            if (Objects.isNull(brandId)){
+                return smartphoneRepository.findByPriceBetweenOrderByPrice(
+                        minPrice,
+                        maxPrice,
+                        pageRequest
+                );
+            } else {
+                return smartphoneRepository.findByPriceBetweenAndBrand_IdOrderByPrice(
+                        minPrice,
+                        maxPrice,
+                        brandId,
+                        pageRequest
+                );
+            }
+        } else if (sortType == Sort.DECREASE) {
+            if (Objects.isNull(brandId)){
+                return smartphoneRepository.findByPriceBetweenOrderByPriceDesc(
+                        minPrice,
+                        maxPrice,
+                        pageRequest
+                );
+            } else {
+                return smartphoneRepository.findByPriceBetweenAndBrand_IdOrderByPriceDesc(
+                        minPrice,
+                        maxPrice,
+                        brandId,
+                        pageRequest
+                );
+            }
+        } else {
+            if (Objects.nonNull(brandId)){
+                return smartphoneRepository.findByPriceBetweenAndBrand_IdOrderByCreatedAtDesc(
+                        minPrice,
+                        maxPrice,
+                        brandId,
+                        pageRequest
+                );
+            }
+        }
+        return smartphoneRepository
+                .findByPriceBetweenOrderByCreatedAtDesc(minPrice, maxPrice, pageRequest);
     }
 
     @Override
@@ -77,13 +123,23 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
-    public void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException {
-        smartphoneRepository
+    public void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException, IOException {
+        Smartphone smartphone = smartphoneRepository
                 .findById(smartphoneId)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy điện thoại"));
+        if (smartphone.getImageUrl() != null){
+            String path = smartphone.getImageUrl().getPath();
+            UUID uuid = UUID.fromString(
+                    path.substring(
+                            path.lastIndexOf("/") + 1
+                    )
+            );
+            fileStorageService.removeFile(uuid);
+        };
         smartphoneRepository.deleteById(smartphoneId);
     }
 
+//    Kiểm tra tên và sku đã tồn tại chưa
     @Override
     public Smartphone updateImage(Long smartphoneId, MultipartFile image) throws DataNotFoundException, IOException {
         Smartphone smartphone = smartphoneRepository
@@ -175,4 +231,5 @@ public class SmartphoneServiceImplement implements SmartphoneService {
         }
         return smartphone;
     }
+
 }

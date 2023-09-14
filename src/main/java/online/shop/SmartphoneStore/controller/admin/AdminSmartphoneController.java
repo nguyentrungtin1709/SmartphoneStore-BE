@@ -36,7 +36,7 @@ public class AdminSmartphoneController {
     public ResponseEntity<Smartphone> saveSmartphone(
             @RequestParam("name") @NotBlank(message = "Không được bỏ trống") String name,
             @RequestParam("brandId") Integer brandId,
-            @RequestParam("price") @Positive(message = "Giá bán cần lớn hơn 0") Double price,
+            @RequestParam("price") @Positive(message = "Giá bán cần lớn hơn 0") Integer price,
             @RequestParam(value = "quantity")
             @PositiveOrZero(message = "Số lượng cần lớn hơn hoặc bằng 0") Integer quantityInStock,
             @RequestParam(value = "screen", required = false) String screen,
@@ -82,7 +82,7 @@ public class AdminSmartphoneController {
     @DeleteMapping("/{smartphoneId}")
     public ResponseEntity<Object> deleteSmartphoneById(
             @PathVariable("smartphoneId") Long smartphoneId
-    ) throws DataNotFoundException {
+    ) throws DataNotFoundException, IOException {
         smartphoneService.deleteSmartphoneById(smartphoneId);
         return ResponseEntity
                 .ok()

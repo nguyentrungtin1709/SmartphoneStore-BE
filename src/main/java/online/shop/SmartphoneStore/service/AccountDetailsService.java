@@ -60,15 +60,11 @@ public class AccountDetailsService implements UserDetailsService {
     }
 
     public boolean wasRegisteredEmail(String email){
-        return accountRepository
-                .findAccountByEmail(email)
-                .isPresent();
+        return accountRepository.existsAccountByEmail(email);
     }
 
     public boolean wasRegisteredPhone(String phone){
-        return accountRepository
-                .findAccountByPhone(phone)
-                .isPresent();
+        return accountRepository.existsAccountByPhone(phone);
     }
 
 }

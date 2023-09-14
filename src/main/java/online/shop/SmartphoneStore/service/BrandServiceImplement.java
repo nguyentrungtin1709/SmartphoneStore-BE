@@ -27,9 +27,7 @@ public class BrandServiceImplement implements BrandService {
     public Brand saveBrand(Brand brand)
             throws UniqueConstraintException
     {
-        boolean hasBrand = brandRepository
-                .findBrandByName(brand.getName())
-                .isPresent();
+        boolean hasBrand = brandRepository.existsBrandByName(brand.getName());
         if (hasBrand){
             throw new UniqueConstraintException(
                     Map.of("name","Nhãn hiệu đã tồn tại")
@@ -52,9 +50,7 @@ public class BrandServiceImplement implements BrandService {
 
     @Override
     public Brand updateBrand(Integer brandId, Brand brand) throws UniqueConstraintException {
-        boolean hasBrand = brandRepository
-                .findBrandByName(brand.getName())
-                .isPresent();
+        boolean hasBrand = brandRepository.existsBrandByName(brand.getName());
         if (hasBrand){
             throw new UniqueConstraintException(
                     Map.of("name","Nhãn hiệu đã tồn tại")

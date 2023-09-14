@@ -54,7 +54,7 @@ public class Smartphone {
     @NotNull(message = "Không được bỏ trống")
     @Positive(message = "Giá bán cần lớn hơn 0")
     @Column(name = "gia_ban")
-    private Double price;
+    private Integer price;
 
 
 
