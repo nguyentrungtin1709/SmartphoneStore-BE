@@ -49,14 +49,21 @@ public class BrandServiceImplement implements BrandService {
     }
 
     @Override
-    public Brand updateBrand(Integer brandId, Brand brand) throws UniqueConstraintException {
-        boolean hasBrand = brandRepository.existsBrandByName(brand.getName());
-        if (hasBrand){
-            throw new UniqueConstraintException(
-                    Map.of("name","Nhãn hiệu đã tồn tại")
-            );
+    public Brand updateBrand(Integer brandId, Brand update)
+            throws UniqueConstraintException, DataNotFoundException
+    {
+        Brand brand = brandRepository
+                .findById(brandId)
+                .orElseThrow(() -> new DataNotFoundException("Thương hiệu không tồn tại"));
+        if (!brand.getName().equals(update.getName())){
+            boolean hasBrand = brandRepository.existsBrandByName(update.getName());
+            if (hasBrand){
+                throw new UniqueConstraintException(
+                        Map.of("name","Nhãn hiệu đã tồn tại")
+                );
+            }
+            brand.setName(update.getName());
         }
-        brand.setId(brandId);
         return brandRepository.save(brand);
     }
 

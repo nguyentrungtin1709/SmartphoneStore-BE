@@ -60,11 +60,12 @@ public class AdminSupplierController {
     }
 
 //    Có một lỗi ngiêm trọng ở đây
+
     @PutMapping("/{supplierId}")
     public ResponseEntity<Supplier> updateSupplier(
             @PathVariable("supplierId") Integer supplierId,
             @Valid @RequestBody Supplier supplier
-    ) throws UniqueConstraintException {
+    ) throws UniqueConstraintException, DataNotFoundException {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

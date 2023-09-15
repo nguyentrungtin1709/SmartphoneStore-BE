@@ -12,7 +12,6 @@ import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 
@@ -61,18 +60,15 @@ public class AccountProfileController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<RedirectView> changePassword(
+    public ResponseEntity<Object> changePassword(
             @CurrentSecurityContext SecurityContext securityContext,
             @Valid @RequestBody PasswordChanging passwordChanging
     ) {
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
         authenticationService.changePassword(account, passwordChanging);
-//      Notice
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(
-                        new RedirectView("/api/v1/auth/login")
-                );
+                .body(null);
     }
 }

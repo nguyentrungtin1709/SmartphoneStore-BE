@@ -14,7 +14,7 @@ public interface BrandService {
 
     Brand readBrandById(Integer brandId) throws DataNotFoundException;
 
-    Brand updateBrand(Integer brandId, Brand brand) throws UniqueConstraintException;
+    Brand updateBrand(Integer brandId, Brand brand) throws UniqueConstraintException, DataNotFoundException;
 
     void deleteBrandById(Integer brandId) throws DataNotFoundException;
 

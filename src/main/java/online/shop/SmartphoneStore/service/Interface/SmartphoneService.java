@@ -29,5 +29,5 @@ public interface SmartphoneService {
     Smartphone updateImage(Long smartphoneId, MultipartFile image)
             throws DataNotFoundException, IOException;
 
-    Smartphone updateInfo(Long smartphoneId, Smartphone smartphone) throws DataNotFoundException;
+    Smartphone updateInfo(Long smartphoneId, Smartphone smartphone) throws DataNotFoundException, UniqueConstraintException;
 }

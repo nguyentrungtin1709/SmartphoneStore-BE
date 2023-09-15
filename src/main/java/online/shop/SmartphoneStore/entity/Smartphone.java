@@ -50,13 +50,10 @@ public class Smartphone {
     )
     private Brand brand;
 
-
     @NotNull(message = "Không được bỏ trống")
     @Positive(message = "Giá bán cần lớn hơn 0")
     @Column(name = "gia_ban")
     private Integer price;
-
-
 
     @NotNull(message = "Không được bỏ trống")
     @PositiveOrZero(message = "Số lượng cần lớn hơn hoặc bằng 0")

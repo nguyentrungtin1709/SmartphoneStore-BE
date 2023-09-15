@@ -160,10 +160,30 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
-    public Smartphone updateInfo(Long smartphoneId, Smartphone data) throws DataNotFoundException {
+    public Smartphone updateInfo(Long smartphoneId, Smartphone data) throws DataNotFoundException, UniqueConstraintException {
         Smartphone smartphone = smartphoneRepository
                 .findById(smartphoneId)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy điện thoại"));
+        if (!smartphone.getName().equals(data.getName()) || !smartphone.getSku().equals(data.getSku())){
+            Map<String, String> errors = new HashMap<>();
+            boolean hasName = false;
+            boolean hasSku = false;
+            if (!smartphone.getName().equals(data.getName())){
+                hasName = smartphoneRepository.existsSmartphoneByName(data.getName());
+                if (hasName){
+                    errors.put("name", "Tên điện thoại đã tồn tại");
+                }
+            }
+            if (!smartphone.getSku().equals(data.getSku())){
+                hasSku = smartphoneRepository.existsSmartphoneBySku(data.getSku());
+                if (hasSku){
+                    errors.put("sku", "Mã SKU đã tồn tại");
+                }
+            }
+            if (hasName || hasSku){
+                throw new UniqueConstraintException(errors);
+            }
+        }
         return smartphoneRepository.save(
                 updateInfoHelper(smartphone, data)
         );

@@ -107,7 +107,7 @@ public class AdminSmartphoneController {
     public ResponseEntity<Smartphone> updateInfo(
             @PathVariable("smartphoneId") Long smartphoneId,
             @Valid @RequestBody Smartphone smartphone
-    ) throws DataNotFoundException {
+    ) throws DataNotFoundException, UniqueConstraintException {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

@@ -47,14 +47,27 @@ public class SupplierServiceImplement implements SupplierService {
     }
 
     @Override
-    public Supplier updateSupplier(Integer supplierId, Supplier supplier) throws UniqueConstraintException {
-        boolean hasSupplier = supplierRepository
-                .findSupplierByName(supplier.getName())
-                .isPresent();
-        if (hasSupplier){
-            throw new UniqueConstraintException(Map.of("name", "Nhà cung cấp đã tồn tại"));
+    public Supplier updateSupplier(Integer supplierId, Supplier update)
+            throws UniqueConstraintException, DataNotFoundException
+    {
+        Supplier supplier = supplierRepository
+                .findById(supplierId)
+                .orElseThrow(() -> new DataNotFoundException("Nhà cung cấp không tồn tại"));
+        if (!supplier.getName().equals(update.getName())){
+            boolean hasSupplier = supplierRepository
+                    .findSupplierByName(update.getName())
+                    .isPresent();
+            if (hasSupplier){
+                throw new UniqueConstraintException(Map.of("name", "Nhà cung cấp đã tồn tại"));
+            }
+            supplier.setName(update.getName());
         }
-        supplier.setId(supplierId);
+        if (!supplier.getEmail().equals(update.getEmail())){
+            supplier.setEmail(update.getEmail());
+        }
+        if (!supplier.getPhone().equals(update.getPhone())){
+            supplier.setPhone(update.getPhone());
+        }
         return supplierRepository.save(supplier);
     }
 

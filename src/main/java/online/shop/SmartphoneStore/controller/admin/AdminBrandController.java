@@ -39,7 +39,7 @@ public class AdminBrandController {
     public ResponseEntity<Brand> updateBrand(
             @PathVariable("brandId") Integer brandId,
             @Valid @RequestBody Brand brand
-    ) throws UniqueConstraintException {
+    ) throws UniqueConstraintException, DataNotFoundException {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

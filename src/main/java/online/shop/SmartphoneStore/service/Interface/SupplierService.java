@@ -13,7 +13,7 @@ public interface SupplierService {
 
     Supplier readSupplierById(Integer supplierId) throws DataNotFoundException;
 
-    Supplier updateSupplier(Integer supplierId, Supplier supplier) throws UniqueConstraintException;
+    Supplier updateSupplier(Integer supplierId, Supplier supplier) throws UniqueConstraintException, DataNotFoundException;
 
     void deleteSupplierById(Integer supplierId) throws DataNotFoundException;
 }
