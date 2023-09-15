@@ -13,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.*;
 
 @Service
@@ -64,10 +62,9 @@ public class AuthenticationServiceImplement implements AuthenticationService {
                 .role(Role.CUSTOMER)
                 .phone(request.getPhone())
                 .build();
-        String token = jsonWebTokenService.generateToken(
-                accountDetailsService.saveAccount(account)
-        );
-        return new TokenResponse(token);
+        account = accountDetailsService.saveAccount(account);
+        String token = jsonWebTokenService.generateToken(account);
+        return new TokenResponse(account, token);
     }
 
     @Override
@@ -78,10 +75,9 @@ public class AuthenticationServiceImplement implements AuthenticationService {
                         request.getPassword()
                 )
         );
-        String token = jsonWebTokenService.generateToken(
-                (Account) accountDetailsService.loadUserByUsername(request.getEmail())
-        );
-        return new TokenResponse(token);
+        Account account = (Account) accountDetailsService.loadUserByUsername(request.getEmail());
+        String token = jsonWebTokenService.generateToken(account);
+        return new TokenResponse(account, token);
     }
 
     @Override

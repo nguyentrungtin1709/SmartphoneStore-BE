@@ -59,7 +59,6 @@ public class Account implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @JsonIgnore
     @Enumerated(value = EnumType.ORDINAL)
     @Column(name = "role", nullable = false)
     private Role role;
