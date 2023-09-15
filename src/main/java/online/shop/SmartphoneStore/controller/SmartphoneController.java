@@ -2,6 +2,7 @@ package online.shop.SmartphoneStore.controller;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import online.shop.SmartphoneStore.entity.Enum.Sort;
 import online.shop.SmartphoneStore.entity.Smartphone;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
@@ -14,8 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -56,6 +56,23 @@ public class SmartphoneController {
                                 maxPrice,
                                 getSortFromInt(sort)
                         )
+                );
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Smartphone>> searchSmartphonesByKeyWord(
+            @RequestParam("key")
+            @Pattern(
+                    regexp = "^[a-zA-Z0-9\\s]+$",
+                    message = "Từ khóa chỉ chứa chữ cái và số. Không chứa kí tự đặt biệt"
+            ) String keyword,
+            @RequestParam(value = "p", defaultValue = "0") Integer page
+    ){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        smartphoneService.searchSmartphonesByKeyword(keyword, page)
                 );
     }
 

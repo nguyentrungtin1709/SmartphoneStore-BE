@@ -4,16 +4,14 @@ import online.shop.SmartphoneStore.entity.Smartphone;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface SmartphoneRepository extends JpaRepository<Smartphone, Long> {
-
-    Optional<Smartphone> findSmartphoneByName(String name);
-
-    Optional<Smartphone> findSmartphoneBySku(String sku);
 
     boolean existsSmartphoneByName(String name);
 
@@ -43,4 +41,9 @@ public interface SmartphoneRepository extends JpaRepository<Smartphone, Long> {
             Integer minPrice, Integer maxPrice, Integer brandId, PageRequest page
     );
 
+    @Query(
+            value = "SELECT * FROM dien_thoai WHERE ten_dien_thoai LIKE %:keyword%",
+            nativeQuery = true
+    )
+    List<Smartphone> findByKeyword(String keyword);
 }

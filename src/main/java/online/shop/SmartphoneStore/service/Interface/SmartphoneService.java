@@ -22,6 +22,8 @@ public interface SmartphoneService {
             Sort sortType
     );
 
+    Page<Smartphone> searchSmartphonesByKeyword(String keyword, Integer page);
+
     Smartphone readSmartphoneById(Long smartphoneId) throws DataNotFoundException;
 
     void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException, IOException;

@@ -5,21 +5,18 @@ import online.shop.SmartphoneStore.entity.Smartphone;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.repository.SmartphoneRepository;
-import online.shop.SmartphoneStore.service.Interface.BrandService;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import online.shop.SmartphoneStore.service.Interface.SmartphoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SmartphoneServiceImplement implements SmartphoneService {
@@ -116,6 +113,16 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
+    public Page<Smartphone> searchSmartphonesByKeyword(String keyword, Integer page) {
+        List<Smartphone> smartphones = smartphoneRepository.findByKeyword(keyword);
+        return new PageImpl<>(
+                smartphones,
+                PageRequest.of(page, 12),
+                smartphones.size()
+        );
+    }
+
+    @Override
     public Smartphone readSmartphoneById(Long smartphoneId) throws DataNotFoundException {
         return smartphoneRepository
                 .findById(smartphoneId)
@@ -139,7 +146,6 @@ public class SmartphoneServiceImplement implements SmartphoneService {
         smartphoneRepository.deleteById(smartphoneId);
     }
 
-//    Kiểm tra tên và sku đã tồn tại chưa
     @Override
     public Smartphone updateImage(Long smartphoneId, MultipartFile image) throws DataNotFoundException, IOException {
         Smartphone smartphone = smartphoneRepository
