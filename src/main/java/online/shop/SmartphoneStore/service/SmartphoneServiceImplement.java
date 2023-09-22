@@ -65,9 +65,10 @@ public class SmartphoneServiceImplement implements SmartphoneService {
             Integer brandId,
             Integer minPrice,
             Integer maxPrice,
-            Sort sortType
+            Sort sortType,
+            Integer size
     ) {
-        PageRequest pageRequest = PageRequest.of(page, 12);
+        PageRequest pageRequest = PageRequest.of(page, size);
         if (sortType == Sort.INCREASE){
             if (Objects.isNull(brandId)){
                 return smartphoneRepository.findByPriceBetweenOrderByPrice(

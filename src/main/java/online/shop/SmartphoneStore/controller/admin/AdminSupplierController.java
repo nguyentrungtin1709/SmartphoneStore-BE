@@ -59,8 +59,6 @@ public class AdminSupplierController {
                 );
     }
 
-//    Có một lỗi ngiêm trọng ở đây
-
     @PutMapping("/{supplierId}")
     public ResponseEntity<Supplier> updateSupplier(
             @PathVariable("supplierId") Integer supplierId,

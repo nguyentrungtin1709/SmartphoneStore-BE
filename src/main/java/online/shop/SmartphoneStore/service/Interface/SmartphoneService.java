@@ -19,7 +19,8 @@ public interface SmartphoneService {
             Integer labelId,
             Integer minPrice,
             Integer maxPrice,
-            Sort sortType
+            Sort sortType,
+            Integer size
     );
 
     Page<Smartphone> searchSmartphonesByKeyword(String keyword, Integer page);

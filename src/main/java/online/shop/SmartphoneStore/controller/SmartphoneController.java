@@ -3,6 +3,7 @@ package online.shop.SmartphoneStore.controller;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import online.shop.SmartphoneStore.entity.Enum.Sort;
 import online.shop.SmartphoneStore.entity.Smartphone;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
@@ -33,13 +34,15 @@ public class SmartphoneController {
 
     @GetMapping
     public ResponseEntity<Page<Smartphone>> readSmartphones(
-            @RequestParam(value = "p", defaultValue = "0") Integer page,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "brand", required = false) Integer brandId,
             @RequestParam(value = "min", required = false)
             @Min(value = 0) @Max(value = 100) Integer minPrice,
             @RequestParam(value = "max", required = false)
             @Min(value = 0) @Max(value = 1000) Integer maxPrice,
-            @RequestParam(value = "sort", defaultValue = "0") Integer sort
+            @RequestParam(value = "sort", defaultValue = "0") Integer sort,
+            @RequestParam(value = "size", defaultValue = "12")
+            @Positive(message = "Số lượng cần lớn hơn 0") Integer size
         ){
         Map<String, Integer> price = convertMinAndMaxPriceFromData(minPrice, maxPrice);
         minPrice = price.get("minPrice");
@@ -53,7 +56,8 @@ public class SmartphoneController {
                                 brandId,
                                 minPrice,
                                 maxPrice,
-                                getSortFromInt(sort)
+                                getSortFromInt(sort),
+                                size
                         )
                 );
     }
@@ -65,7 +69,7 @@ public class SmartphoneController {
                     regexp = "^[a-zA-Z0-9\\s]+$",
                     message = "Từ khóa chỉ chứa chữ cái và số. Không chứa kí tự đặt biệt"
             ) String keyword,
-            @RequestParam(value = "p", defaultValue = "0") Integer page
+            @RequestParam(value = "page", defaultValue = "0") Integer page
     ){
         return ResponseEntity
                 .ok()
