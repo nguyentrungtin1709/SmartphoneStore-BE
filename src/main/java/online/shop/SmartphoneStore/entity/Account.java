@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import online.shop.SmartphoneStore.entity.Enum.Gender;
 import online.shop.SmartphoneStore.entity.Enum.Role;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -14,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -69,6 +71,12 @@ public class Account implements UserDetails {
 
     @Column(name = "hinh_anh")
     private URI imageUrl;
+
+    @Column(name = "ngay_sinh")
+    private LocalDate birthday;
+
+    @Column(name = "gioi_tinh")
+    private Gender gender;
 
     @CreationTimestamp
     @Column(name = "ngay_tao")

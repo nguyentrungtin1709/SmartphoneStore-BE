@@ -10,6 +10,7 @@ import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -94,4 +95,17 @@ public class AuthenticationServiceImplement implements AuthenticationService {
         accountDetailsService.saveAccount(account);
     }
 
+    @Override
+    public TokenResponse changeEmail(String oldEmail, String newEmail) throws UniqueConstraintException {
+        Account account = (Account) accountDetailsService
+                .loadUserByUsername(oldEmail);
+        if (accountDetailsService.wasRegisteredEmail(newEmail) && !newEmail.equals(account.getEmail())){
+            throw new UniqueConstraintException(Map.of("Email", "Email đã tồn tại"));
+        }
+        account.setEmail(newEmail);
+        return new TokenResponse(
+                accountDetailsService.saveAccount(account),
+                jsonWebTokenService.generateToken(account)
+        );
+    }
 }

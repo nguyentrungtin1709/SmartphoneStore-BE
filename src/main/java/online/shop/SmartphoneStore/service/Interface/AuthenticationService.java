@@ -14,4 +14,6 @@ public interface AuthenticationService {
 
     void changePassword(Account account, PasswordChanging request);
 
+    TokenResponse changeEmail(String oldEmail, String newEmail) throws UniqueConstraintException;
+
 }

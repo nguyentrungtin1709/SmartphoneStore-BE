@@ -82,7 +82,7 @@ public class AccountAddressController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        addressService. updateAddress(account, addressId, address)
+                        addressService.updateAddress(account, addressId, address)
                 );
     }
 

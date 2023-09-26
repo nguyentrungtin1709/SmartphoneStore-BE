@@ -2,7 +2,8 @@ package online.shop.SmartphoneStore.controller;
 
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
-import online.shop.SmartphoneStore.entity.payload.PasswordChanging;
+import online.shop.SmartphoneStore.entity.payload.*;
+import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.service.AccountDetailsService;
 import online.shop.SmartphoneStore.service.AuthenticationServiceImplement;
 import online.shop.SmartphoneStore.service.Interface.AuthenticationService;
@@ -70,5 +71,53 @@ public class AccountProfileController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(null);
+    }
+
+    @PutMapping("/email")
+    public ResponseEntity<TokenResponse> changeEmail(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @Valid @RequestBody EmailChanging emailChanging
+    ) throws UniqueConstraintException {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                    authenticationService.changeEmail(account.getEmail(), emailChanging.getEmail())
+                );
+    }
+
+    @PutMapping("/phone")
+    public ResponseEntity<Account> changePhone(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @Valid @RequestBody PhoneChanging phoneChanging
+    ) throws UniqueConstraintException {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        accountDetailsService.updatePhone(
+                                account.getId(),
+                                phoneChanging.getPhone()
+                        )
+                );
+    }
+
+    @PutMapping
+    public ResponseEntity<Account> changeProfile(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @Valid @RequestBody ProfileChanging profile
+    ){
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        accountDetailsService.updateProfile(
+                                account.getId(),
+                                profile
+                        )
+                );
     }
 }

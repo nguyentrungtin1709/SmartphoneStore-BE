@@ -35,7 +35,6 @@ public class JsonWebTokenService {
         Map<String, Object> privateClaims = new HashMap<>();
         privateClaims.put("id", account.getId().toString());
         privateClaims.put("email", account.getEmail());
-        privateClaims.put("name", account.getName());
         return Jwts
                 .builder()
                 .signWith(

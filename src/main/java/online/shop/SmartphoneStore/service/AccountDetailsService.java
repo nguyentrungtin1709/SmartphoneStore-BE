@@ -1,6 +1,8 @@
 package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.Account;
+import online.shop.SmartphoneStore.entity.payload.ProfileChanging;
+import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.repository.AccountRepository;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -67,4 +71,26 @@ public class AccountDetailsService implements UserDetailsService {
         return accountRepository.existsAccountByPhone(phone);
     }
 
+    public Account updatePhone(Long id, String phone) throws UniqueConstraintException {
+        Account account = accountRepository
+                .findById(id)
+                .orElseThrow();
+        if (wasRegisteredPhone(phone) && !phone.equals(account.getPhone())){
+            throw new UniqueConstraintException(Map.of("Phone", "Số điện thoại đã tồn tại"));
+        }
+        account.setPhone(phone);
+        return accountRepository.save(account);
+    }
+
+    public Account updateProfile(Long id, ProfileChanging profile) {
+        Account account = accountRepository
+                .findById(id)
+                .orElseThrow();
+        if (!account.getName().equals(profile.getName())){
+            account.setName(profile.getName());
+        }
+        account.setBirthday(profile.getBirthday());
+        account.setGender(profile.getGender());
+        return accountRepository.save(account);
+    }
 }
