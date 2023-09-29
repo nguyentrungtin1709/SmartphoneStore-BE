@@ -21,7 +21,10 @@ public class RegisterRequest {
     @NotBlank(message = "Không được bỏ trống")
     private String email;
 
-    @Length(min = 6, message = "Mật khẩu cần có ít nhất 6 kí tự")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+-]).{8,}$",
+            message = "Mật khẩu cần có tối thiểu 8 ký tự, bao gồm ít nhất một chữ hoa, chữ thường, kí tự và số."
+    )
     private String password;
 
     @Pattern(regexp = "(0[3|5|7|8|9])+([0-9]{8})\\b", message = "Số điện thoại không hợp lệ")

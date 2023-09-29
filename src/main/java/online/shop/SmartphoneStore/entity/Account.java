@@ -55,9 +55,8 @@ public class Account implements UserDetails {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @NotBlank
     @JsonIgnore
-    @Length(min = 6)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+-]).{8,}$")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -75,6 +74,7 @@ public class Account implements UserDetails {
     @Column(name = "ngay_sinh")
     private LocalDate birthday;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "gioi_tinh")
     private Gender gender;
 

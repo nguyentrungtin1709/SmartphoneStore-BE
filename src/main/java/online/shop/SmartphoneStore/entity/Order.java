@@ -33,7 +33,7 @@ public class Order {
     private Account account;
 
     @NotNull
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "trang_thai")
     private OrderStatus status;
 

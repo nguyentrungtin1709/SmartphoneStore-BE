@@ -56,7 +56,7 @@ public class Rating {
     private Smartphone smartphone;
 
     @NotNull
-    @Enumerated(value = EnumType.ORDINAL)
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "so_sao")
     private Star star;
 

@@ -100,7 +100,7 @@ public class AuthenticationServiceImplement implements AuthenticationService {
         Account account = (Account) accountDetailsService
                 .loadUserByUsername(oldEmail);
         if (accountDetailsService.wasRegisteredEmail(newEmail) && !newEmail.equals(account.getEmail())){
-            throw new UniqueConstraintException(Map.of("Email", "Email đã tồn tại"));
+            throw new UniqueConstraintException(Map.of("email", "Email đã tồn tại"));
         }
         account.setEmail(newEmail);
         return new TokenResponse(

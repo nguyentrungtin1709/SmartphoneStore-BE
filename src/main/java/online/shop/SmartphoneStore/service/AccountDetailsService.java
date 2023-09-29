@@ -76,7 +76,7 @@ public class AccountDetailsService implements UserDetailsService {
                 .findById(id)
                 .orElseThrow();
         if (wasRegisteredPhone(phone) && !phone.equals(account.getPhone())){
-            throw new UniqueConstraintException(Map.of("Phone", "Số điện thoại đã tồn tại"));
+            throw new UniqueConstraintException(Map.of("phone", "Số điện thoại đã tồn tại"));
         }
         account.setPhone(phone);
         return accountRepository.save(account);
