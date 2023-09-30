@@ -35,8 +35,8 @@ public class Brand {
     @Column(name = "ten_hang", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "brand")
     @JsonIgnore
+    @OneToMany(mappedBy = "brand", cascade = {CascadeType.ALL})
     private List<Smartphone> smartphoneList;
 
 }

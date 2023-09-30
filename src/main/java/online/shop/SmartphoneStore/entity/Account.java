@@ -83,7 +83,7 @@ public class Account implements UserDetails {
     private LocalDateTime createdAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.ALL})
     private List<Address> addressList;
 
     @JsonIgnore
