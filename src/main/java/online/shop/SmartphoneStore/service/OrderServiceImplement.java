@@ -11,6 +11,8 @@ import online.shop.SmartphoneStore.repository.OrderDetailsRepository;
 import online.shop.SmartphoneStore.repository.OrderRepository;
 import online.shop.SmartphoneStore.repository.SmartphoneRepository;
 import online.shop.SmartphoneStore.service.Interface.OrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -104,4 +106,32 @@ public class OrderServiceImplement implements OrderService {
         return orderResponse;
     }
 
+    @Override
+    public Page<Order> readAllOrders(Account account, Integer page) {
+        return orderRepository.findOrdersByAccount_Id(
+                account.getId(),
+                PageRequest.of(page, 4)
+        );
+    }
+
+    @Override
+    public Order readOrderById(Account account, Long orderId) throws DataNotFoundException {
+        return orderRepository.findOrderByAccount_IdAndId(
+                account.getId(),
+                orderId
+        ).orElseThrow(() -> new DataNotFoundException("Không tìm thấy đơn hàng"));
+    }
+
+    @Override
+    public Order cancelOrder(Account account, Long orderId) throws DataNotFoundException {
+        Order order = orderRepository.findOrderByAccount_IdAndId(
+                account.getId(),
+                orderId
+        ).orElseThrow(() -> new DataNotFoundException("Không tìm thấy đơn hàng"));
+        if (order.getStatus() == OrderStatus.PENDING || order.getStatus() == OrderStatus.PREPARING){
+            order.setStatus(OrderStatus.CANCELLED);
+            return orderRepository.save(order);
+        }
+        return order;
+    }
 }

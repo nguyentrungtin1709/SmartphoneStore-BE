@@ -2,15 +2,17 @@ package online.shop.SmartphoneStore.controller.customer;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Order;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.service.AccountDetailsService;
 import online.shop.SmartphoneStore.service.Interface.OrderService;
 import online.shop.SmartphoneStore.service.OrderServiceImplement;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/account/order")
@@ -29,11 +31,58 @@ public class AccountOrderController {
     }
 
     @PostMapping
-    public Order createOrder(
+    public ResponseEntity<Order> createOrder(
             @CurrentSecurityContext SecurityContext securityContext,
             @RequestBody Order order
     ){
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
-        return orderService.createOrder(order, account);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                    orderService.createOrder(order, account)
+                );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Order>> readAllOrders(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @RequestParam(value = "page", defaultValue = "0") Integer page
+    ){
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        orderService.readAllOrders(account, page)
+                );
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<Order> readOrder(
+        @CurrentSecurityContext SecurityContext securityContext,
+        @PathVariable("orderId") Long orderId
+    ) throws DataNotFoundException {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        orderService.readOrderById(account, orderId)
+                );
+    }
+
+    @PutMapping("/cancel/{orderId}")
+    public ResponseEntity<Order> cancelOrder(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @PathVariable("orderId") Long orderId
+    ) throws DataNotFoundException {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        orderService.cancelOrder(account, orderId)
+                );
     }
 }
