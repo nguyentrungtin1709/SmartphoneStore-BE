@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -29,31 +30,25 @@ public class OrderDetails {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(
-            name = "ma_don_hang",
-            nullable = false
-    )
+    @JsonIgnore
+    @JoinColumn(name = "ma_don_hang", nullable = false)
     private Order order;
 
     @ManyToOne
-    @JoinColumn(
-            name = "ma_dien_thoai",
-            nullable = false
-    )
+    @JoinColumn(name = "ma_dien_thoai", nullable = false)
     private Smartphone smartphone;
 
-    @NotNull
     @Positive
-    @Column(name = "so_luong")
+    @Column(name = "so_luong", nullable = false)
     private Integer quantity;
 
-    @NotNull
     @Positive
-    @Column(name = "gia_ban")
-    private Double price;
+    @Column(name = "gia_ban", nullable = false)
+    private Integer price;
 
-    @NotNull
-    @Column(name = "da_danh_gia")
-    @Convert(converter = NumericBooleanConverter.class)
-    private Boolean isRated;
+    @JsonIgnore
+    public Integer getTotal(){
+        return quantity * price;
+    }
+
 }
