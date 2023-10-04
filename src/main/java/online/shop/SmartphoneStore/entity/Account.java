@@ -87,7 +87,7 @@ public class Account implements UserDetails {
     private List<Address> addressList;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.ALL})
     private List<Order> orderList;
 
     @Override

@@ -23,7 +23,7 @@ public interface SmartphoneService {
             Integer size
     );
 
-    Page<Smartphone> searchSmartphonesByKeyword(String keyword, Integer page);
+    Page<Smartphone> searchSmartphonesByKeyword(String keyword, Integer page, Integer size);
 
     Smartphone readSmartphoneById(Long smartphoneId) throws DataNotFoundException;
 

@@ -64,6 +64,6 @@ public class Order {
     @Column(name = "ngay_dat_hang")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.ALL})
     private List<OrderDetails> orderItemList = new ArrayList<>();
 }

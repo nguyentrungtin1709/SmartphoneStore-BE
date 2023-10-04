@@ -3,6 +3,7 @@ package online.shop.SmartphoneStore.controller;
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.payload.*;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.service.AccountDetailsService;
 import online.shop.SmartphoneStore.service.AuthenticationServiceImplement;
@@ -108,7 +109,7 @@ public class AccountProfileController {
     public ResponseEntity<Account> changeProfile(
             @CurrentSecurityContext SecurityContext securityContext,
             @Valid @RequestBody ProfileChanging profile
-    ){
+    ) throws DataNotFoundException {
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
         return ResponseEntity
                 .ok()

@@ -2,10 +2,13 @@ package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.payload.ProfileChanging;
+import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.repository.AccountRepository;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -81,15 +84,36 @@ public class AccountDetailsService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
-    public Account updateProfile(Long id, ProfileChanging profile) {
+    public Account updateProfile(Long id, ProfileChanging profile) throws DataNotFoundException {
         Account account = accountRepository
                 .findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy tài khoản"));
         if (!account.getName().equals(profile.getName())){
             account.setName(profile.getName());
         }
         account.setBirthday(profile.getBirthday());
         account.setGender(profile.getGender());
         return accountRepository.save(account);
+    }
+
+    public Page<Account> readAllAccounts(Integer page) {
+        return accountRepository.findAllByOrderByName(PageRequest.of(page, 12));
+    }
+
+    public Account readAccountById(Long accountId) throws DataNotFoundException {
+        return accountRepository
+                .findById(accountId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy tài khoản"));
+    }
+
+    public void deleteAccountById(Long accountId) throws DataNotFoundException {
+        Account account = accountRepository
+                .findById(accountId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy tài khoản"));
+        accountRepository.deleteById(accountId);
+    }
+
+    public Page<Account> searchAccountByEmail(String keyword, Integer page) {
+        return accountRepository.searchAccountsByEmail(keyword, PageRequest.of(page, 12));
     }
 }

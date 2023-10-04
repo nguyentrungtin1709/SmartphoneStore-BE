@@ -69,13 +69,15 @@ public class SmartphoneController {
                     regexp = "^[a-zA-Z0-9\\s]+$",
                     message = "Từ khóa chỉ chứa chữ cái và số. Không chứa kí tự đặt biệt"
             ) String keyword,
-            @RequestParam(value = "page", defaultValue = "0") Integer page
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12")
+            @Positive(message = "Số lượng cần lớn hơn 0") Integer size
     ){
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        smartphoneService.searchSmartphonesByKeyword(keyword, page)
+                        smartphoneService.searchSmartphonesByKeyword(keyword, page, size)
                 );
     }
 

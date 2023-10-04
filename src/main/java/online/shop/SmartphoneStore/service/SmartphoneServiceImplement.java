@@ -9,7 +9,6 @@ import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import online.shop.SmartphoneStore.service.Interface.SmartphoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -114,13 +113,8 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
-    public Page<Smartphone> searchSmartphonesByKeyword(String keyword, Integer page) {
-        List<Smartphone> smartphones = smartphoneRepository.findByKeyword(keyword);
-        return new PageImpl<>(
-                smartphones,
-                PageRequest.of(page, 12),
-                smartphones.size()
-        );
+    public Page<Smartphone> searchSmartphonesByKeyword(String keyword, Integer page, Integer size) {
+        return smartphoneRepository.findByKeyword(keyword, PageRequest.of(page, size));
     }
 
     @Override

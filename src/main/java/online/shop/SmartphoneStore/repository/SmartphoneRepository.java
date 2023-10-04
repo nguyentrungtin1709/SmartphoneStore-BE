@@ -45,5 +45,5 @@ public interface SmartphoneRepository extends JpaRepository<Smartphone, Long> {
             value = "SELECT * FROM dien_thoai WHERE ten_dien_thoai LIKE %:keyword%",
             nativeQuery = true
     )
-    List<Smartphone> findByKeyword(String keyword);
+    Page<Smartphone> findByKeyword(String keyword, PageRequest page);
 }
