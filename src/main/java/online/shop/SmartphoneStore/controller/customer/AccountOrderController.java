@@ -56,7 +56,7 @@ public class AccountOrderController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        orderService.readAllOrders(account, page)
+                        orderService.readAllOrdersByAccount(account, page)
                 );
     }
 
@@ -70,7 +70,7 @@ public class AccountOrderController {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        orderService.readOrderById(account, orderId)
+                        orderService.readOrderByIdAndAccount(account, orderId)
                 );
     }
 

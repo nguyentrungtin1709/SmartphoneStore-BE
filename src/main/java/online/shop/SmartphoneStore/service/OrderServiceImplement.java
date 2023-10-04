@@ -107,7 +107,7 @@ public class OrderServiceImplement implements OrderService {
     }
 
     @Override
-    public Page<Order> readAllOrders(Account account, Integer page) {
+    public Page<Order> readAllOrdersByAccount(Account account, Integer page) {
         return orderRepository.findOrdersByAccount_Id(
                 account.getId(),
                 PageRequest.of(page, 4)
@@ -115,7 +115,7 @@ public class OrderServiceImplement implements OrderService {
     }
 
     @Override
-    public Order readOrderById(Account account, Long orderId) throws DataNotFoundException {
+    public Order readOrderByIdAndAccount(Account account, Long orderId) throws DataNotFoundException {
         return orderRepository.findOrderByAccount_IdAndId(
                 account.getId(),
                 orderId
@@ -133,5 +133,42 @@ public class OrderServiceImplement implements OrderService {
             return orderRepository.save(order);
         }
         return order;
+    }
+
+    @Override
+    public Page<Order> readAllOrders(Integer page) {
+        return orderRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, 12));
+    }
+
+    @Override
+    public Page<Order> readOrdersByStatus(OrderStatus status, Integer page) {
+        return orderRepository.findOrdersByStatusOrderByCreatedAtDesc(
+                status,
+                PageRequest.of(page, 12)
+        );
+    }
+
+    @Override
+    public Order readOrderById(Long orderId) throws DataNotFoundException {
+        return orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy đơn hàng"));
+    }
+
+    @Override
+    public void deleteOrderById(Long orderId) throws DataNotFoundException {
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy đơn hàng"));
+        orderRepository.deleteById(orderId);
+    }
+
+    @Override
+    public Order updateStatusOfOrderById(Long orderId, OrderStatus status) throws DataNotFoundException {
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy đơn hàng"));
+        order.setStatus(status);
+        return orderRepository.save(order);
     }
 }
