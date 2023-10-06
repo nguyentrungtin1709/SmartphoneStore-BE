@@ -1,12 +1,9 @@
 package online.shop.SmartphoneStore.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import online.shop.SmartphoneStore.entity.Enum.OrderStatus;
-import online.shop.SmartphoneStore.entity.Enum.PaymentMethods;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
@@ -55,10 +52,6 @@ public class Order {
 
     @Column(name = "so_nha", nullable = false)
     private String addressDetails;
-
-    @Enumerated(value = EnumType.ORDINAL)
-    @Column(name = "thanh_toan", nullable = false)
-    private PaymentMethods paymentMethods;
 
     @CreationTimestamp
     @Column(name = "ngay_dat_hang")
