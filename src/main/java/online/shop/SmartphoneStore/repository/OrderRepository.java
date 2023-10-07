@@ -11,7 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Page<Order> findOrdersByAccount_Id(Long accountId, PageRequest page);
+    Page<Order> findOrdersByAccount_IdOrderByCreatedAtDesc(Long accountId, PageRequest page);
+
+    Page<Order> findOrdersByAccount_IdAndStatusOrderByCreatedAtDesc(Long accountId,OrderStatus status, PageRequest page);
 
     Optional<Order> findOrderByAccount_IdAndId(Long accountId, Long orderId);
 

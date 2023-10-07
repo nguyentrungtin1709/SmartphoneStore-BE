@@ -107,8 +107,15 @@ public class OrderServiceImplement implements OrderService {
     }
 
     @Override
-    public Page<Order> readAllOrdersByAccount(Account account, Integer page) {
-        return orderRepository.findOrdersByAccount_Id(
+    public Page<Order> readAllOrdersByAccount(Account account, Integer page, OrderStatus status) {
+        if (status != null) {
+            return orderRepository.findOrdersByAccount_IdAndStatusOrderByCreatedAtDesc(
+                    account.getId(),
+                    status,
+                    PageRequest.of(page, 4)
+            );
+        }
+        return orderRepository.findOrdersByAccount_IdOrderByCreatedAtDesc(
                 account.getId(),
                 PageRequest.of(page, 4)
         );

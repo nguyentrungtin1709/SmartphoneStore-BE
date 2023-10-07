@@ -10,7 +10,7 @@ public interface OrderService {
 
     Order createOrder(Order order, Account account);
 
-    Page<Order> readAllOrdersByAccount(Account account, Integer page);
+    Page<Order> readAllOrdersByAccount(Account account, Integer page, OrderStatus status);
 
     Order readOrderByIdAndAccount(Account account, Long orderId) throws DataNotFoundException;
 

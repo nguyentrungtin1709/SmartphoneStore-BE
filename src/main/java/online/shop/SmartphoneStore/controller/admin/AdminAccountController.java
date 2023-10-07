@@ -2,6 +2,7 @@ package online.shop.SmartphoneStore.controller.admin;
 
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
+import online.shop.SmartphoneStore.entity.Enum.OrderStatus;
 import online.shop.SmartphoneStore.entity.Order;
 import online.shop.SmartphoneStore.entity.payload.ProfileChanging;
 import online.shop.SmartphoneStore.entity.payload.RegisterRequest;
@@ -70,14 +71,15 @@ public class AdminAccountController {
     @GetMapping("/{accountId}/orders")
     public ResponseEntity<Page<Order>> readAllOrdersOfUser(
             @PathVariable("accountId") Long accountId,
-            @RequestParam(value = "page", defaultValue = "0") Integer page
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "status", required = false) OrderStatus status
     ) throws DataNotFoundException {
         Account account = accountDetailsService.readAccountById(accountId);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        orderService.readAllOrdersByAccount(account, page)
+                        orderService.readAllOrdersByAccount(account, page, status)
                 );
     }
 

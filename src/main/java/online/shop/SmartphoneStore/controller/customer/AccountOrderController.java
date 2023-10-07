@@ -1,6 +1,7 @@
 package online.shop.SmartphoneStore.controller.customer;
 
 import online.shop.SmartphoneStore.entity.Account;
+import online.shop.SmartphoneStore.entity.Enum.OrderStatus;
 import online.shop.SmartphoneStore.entity.Order;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.service.AccountDetailsService;
@@ -49,14 +50,15 @@ public class AccountOrderController {
     @GetMapping
     public ResponseEntity<Page<Order>> readAllOrders(
             @CurrentSecurityContext SecurityContext securityContext,
-            @RequestParam(value = "page", defaultValue = "0") Integer page
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "status", required = false) OrderStatus status
     ){
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        orderService.readAllOrdersByAccount(account, page)
+                        orderService.readAllOrdersByAccount(account, page, status)
                 );
     }
 
