@@ -3,10 +3,7 @@ package online.shop.SmartphoneStore.exception;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import online.shop.SmartphoneStore.entity.Smartphone;
-import online.shop.SmartphoneStore.exception.custom.AddressOverLimitException;
-import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
-import online.shop.SmartphoneStore.exception.custom.QuantityInStockIsEmptyException;
-import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
+import online.shop.SmartphoneStore.exception.custom.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -105,6 +102,18 @@ public class RestResponseEntityExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                     e.getSmartphone()
+                );
+    }
+
+    @ExceptionHandler(RatingOverLimitException.class)
+    public ResponseEntity<ExceptionMessage> ratingOverLimitException(
+            RatingOverLimitException exception
+    ){
+        return ResponseEntity
+                .badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        new ExceptionMessage(exception.getMessage())
                 );
     }
 }

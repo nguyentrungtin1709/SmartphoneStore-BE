@@ -42,7 +42,8 @@ public class WebSecurity {
                                     "/api/v1/auth/**",
                                     "/api/v1/resources/**",
                                     "/api/v1/brands/**",
-                                    "/api/v1/smartphones/**"
+                                    "/api/v1/smartphones/**",
+                                    "/api/v1/ratings/**"
                             )
                             .permitAll()
                             .requestMatchers(
