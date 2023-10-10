@@ -2,6 +2,7 @@ package online.shop.SmartphoneStore.service.Interface;
 
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Rating;
+import online.shop.SmartphoneStore.entity.payload.RatingStatistic;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.RatingOverLimitException;
 import org.springframework.data.domain.Page;
@@ -21,5 +22,7 @@ public interface RatingService {
     Page<Rating> readAllRatings(Integer page);
 
     void deleteRatingById(Long ratingId) throws DataNotFoundException;
+
+    RatingStatistic readRateValue(Long smartphoneId);
 
 }

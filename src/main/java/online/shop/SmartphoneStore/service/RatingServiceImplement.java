@@ -1,8 +1,10 @@
 package online.shop.SmartphoneStore.service;
 
 import online.shop.SmartphoneStore.entity.Account;
+import online.shop.SmartphoneStore.entity.Enum.Star;
 import online.shop.SmartphoneStore.entity.Rating;
 import online.shop.SmartphoneStore.entity.Smartphone;
+import online.shop.SmartphoneStore.entity.payload.RatingStatistic;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.RatingOverLimitException;
 import online.shop.SmartphoneStore.repository.RatingRepository;
@@ -12,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RatingServiceImplement implements RatingService {
@@ -102,5 +108,37 @@ public class RatingServiceImplement implements RatingService {
                 .findById(ratingId)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy đánh giá"));
         ratingRepository.deleteById(ratingId);
+    }
+
+    @Override
+    public RatingStatistic readRateValue(Long smartphoneId) {
+        List<Rating> ratings = ratingRepository.findRatingsBySmartphone_Id(smartphoneId);
+        Double rate = (double) ratings.stream()
+                .map(Rating::getStar)
+                .mapToInt(Star::ordinal)
+                .sum() / ratings.size();
+        RatingStatistic statistic = RatingStatistic
+                .builder()
+                .rate(rate)
+                .quantity(ratings.size())
+                .one(
+                    getCount(ratings, Star.ONE)
+                ).two(
+                    getCount(ratings, Star.TWO)
+                ).three(
+                    getCount(ratings, Star.THREE)
+                ).four(
+                    getCount(ratings, Star.FOUR)
+                ).five(
+                    getCount(ratings, Star.FIVE)
+                ).build();
+        return statistic;
+    }
+
+    public Integer getCount(List<Rating> ratings, Star star){
+        return (int) ratings.stream()
+                .map(Rating::getStar)
+                .filter(item -> item.equals(star))
+                .count();
     }
 }
