@@ -90,6 +90,10 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = {CascadeType.ALL})
     private List<Order> orderList;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.ALL})
+    private List<Rating> ratingList;
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

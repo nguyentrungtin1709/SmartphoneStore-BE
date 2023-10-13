@@ -25,4 +25,6 @@ public interface RatingService {
 
     RatingStatistic readRateValue(Long smartphoneId);
 
+    Rating readRatingOfAccountById(Account account, Long ratingId) throws DataNotFoundException;
+
 }

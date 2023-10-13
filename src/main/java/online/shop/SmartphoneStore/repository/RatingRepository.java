@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
@@ -20,5 +21,7 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     Page<Rating> findAllByOrderByCreatedAtDesc(PageRequest pageRequest);
 
     List<Rating> findRatingsBySmartphone_Id(Long smartphoneId);
+
+    Optional<Rating> findRatingByAccount_IdAndId(Long accountId, Long ratingId);
 
 }

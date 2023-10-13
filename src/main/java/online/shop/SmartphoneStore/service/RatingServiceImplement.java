@@ -141,4 +141,12 @@ public class RatingServiceImplement implements RatingService {
                 .filter(item -> item.equals(star))
                 .count();
     }
+
+    @Override
+    public Rating readRatingOfAccountById(Account account, Long ratingId) throws DataNotFoundException {
+        return ratingRepository.findRatingByAccount_IdAndId(
+                account.getId(),
+                ratingId
+        ).orElseThrow(() -> new DataNotFoundException("Không tìm thấy đánh giá"));
+    }
 }

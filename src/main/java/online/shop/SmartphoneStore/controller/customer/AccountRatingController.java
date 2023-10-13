@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
@@ -84,6 +83,20 @@ public class AccountRatingController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                         ratingService.readRatingsOfAccount(account, page)
+                );
+    }
+
+    @GetMapping("/{ratingId}")
+    public ResponseEntity<Rating> readRatingOfAccountById(
+            @CurrentSecurityContext SecurityContext securityContext,
+            @PathVariable("ratingId") Long ratingId
+    ) throws DataNotFoundException {
+        Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        ratingService.readRatingOfAccountById(account, ratingId)
                 );
     }
 }

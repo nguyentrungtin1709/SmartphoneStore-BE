@@ -97,7 +97,7 @@ public class AccountDetailsService implements UserDetailsService {
     }
 
     public Page<Account> readAllAccounts(Integer page) {
-        return accountRepository.findAllByOrderByName(PageRequest.of(page, 12));
+        return accountRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, 12));
     }
 
     public Account readAccountById(Long accountId) throws DataNotFoundException {
