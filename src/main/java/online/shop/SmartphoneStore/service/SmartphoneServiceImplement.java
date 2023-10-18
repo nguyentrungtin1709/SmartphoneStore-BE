@@ -1,9 +1,11 @@
 package online.shop.SmartphoneStore.service;
 
+import online.shop.SmartphoneStore.entity.Brand;
 import online.shop.SmartphoneStore.entity.Enum.Sort;
 import online.shop.SmartphoneStore.entity.Smartphone;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
+import online.shop.SmartphoneStore.repository.BrandRepository;
 import online.shop.SmartphoneStore.repository.SmartphoneRepository;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import online.shop.SmartphoneStore.service.Interface.SmartphoneService;
@@ -22,23 +24,25 @@ public class SmartphoneServiceImplement implements SmartphoneService {
 
     private final SmartphoneRepository smartphoneRepository;
 
+    private final BrandRepository brandRepository;
+
     private final FileStorageService fileStorageService;
 
     @Autowired
     public SmartphoneServiceImplement(
             SmartphoneRepository smartphoneRepository,
-            FileStorageServiceImplement fileStorageService
+            BrandRepository brandRepository, FileStorageServiceImplement fileStorageService
     ) {
         this.smartphoneRepository = smartphoneRepository;
+        this.brandRepository = brandRepository;
         this.fileStorageService = fileStorageService;
     }
 
 
     @Override
     public Smartphone saveSmartphone(
-            Smartphone smartphone,
-            MultipartFile file
-    ) throws UniqueConstraintException, IOException {
+            Smartphone smartphone
+    ) throws UniqueConstraintException, DataNotFoundException {
         boolean hasName = smartphoneRepository.existsSmartphoneByName(smartphone.getName());
         boolean hasSku = smartphoneRepository.existsSmartphoneBySku(smartphone.getSku());
         if (hasName || hasSku){
@@ -51,10 +55,12 @@ public class SmartphoneServiceImplement implements SmartphoneService {
             }
             throw new UniqueConstraintException(columns);
         }
-        if (!file.isEmpty()){
-            URI imageUrl = fileStorageService.uploadFile(file);
-            smartphone.setImageUrl(imageUrl);
-        }
+        Brand brand = brandRepository
+                .findById(
+                        smartphone.getBrand().getId()
+                )
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy thương hiệu"));
+        smartphone.setBrand(brand);
         return smartphoneRepository.save(smartphone);
     }
 
@@ -191,6 +197,9 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     private <T> boolean shouldUpdate(T origin, T newData){
+        if (origin == null){
+            return true;
+        }
         return !origin.equals(newData);
     }
 

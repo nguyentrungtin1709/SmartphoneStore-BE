@@ -11,8 +11,8 @@ import java.io.IOException;
 
 public interface SmartphoneService {
 
-    Smartphone saveSmartphone(Smartphone smartphone, MultipartFile file)
-            throws UniqueConstraintException, IOException;
+    Smartphone saveSmartphone(Smartphone smartphone)
+            throws UniqueConstraintException, DataNotFoundException;
 
     Page<Smartphone> readSmartphones(
             Integer page,

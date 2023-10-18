@@ -43,6 +43,7 @@ public class Smartphone {
     @Column(name = "ten_dien_thoai", nullable = false)
     private String name;
 
+    @NotNull(message = "Không được bỏ trống")
     @ManyToOne
     @JoinColumn(
             name = "ma_hang",
@@ -108,10 +109,10 @@ public class Smartphone {
     private LocalDateTime createdAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "smartphone")
+    @OneToMany(mappedBy = "smartphone", cascade = {CascadeType.ALL})
     private List<OrderDetails> orderDetailsList;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "smartphone")
+    @OneToMany(mappedBy = "smartphone", cascade = {CascadeType.ALL})
     private List<Rating> ratingList;
 }

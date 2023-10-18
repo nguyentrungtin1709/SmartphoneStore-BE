@@ -34,48 +34,14 @@ public class AdminSmartphoneController {
 
     @PostMapping
     public ResponseEntity<Smartphone> saveSmartphone(
-            @RequestParam("name") @NotBlank(message = "Không được bỏ trống") String name,
-            @RequestParam("brandId") Integer brandId,
-            @RequestParam("price") @Positive(message = "Giá bán cần lớn hơn 0") Integer price,
-            @RequestParam(value = "quantity")
-            @PositiveOrZero(message = "Số lượng cần lớn hơn hoặc bằng 0") Integer quantityInStock,
-            @RequestParam(value = "screen", required = false) String screen,
-            @RequestParam(value = "os", required = false) String operatingSystem,
-            @RequestParam(value = "rearCamera", required = false) String rearCamera,
-            @RequestParam(value = "frontCamera", required = false) String frontCamera,
-            @RequestParam(value = "chip", required = false) String chip,
-            @RequestParam(value = "ram", required = false) String ram,
-            @RequestParam(value = "storage", required = false) String storageCapacity,
-            @RequestParam(value = "sim", required = false) String sim,
-            @RequestParam(value = "pin", required = false) String pin,
-            @RequestParam("sku") @NotBlank(message = "Không được bỏ trống") String sku,
-            @RequestParam("image") MultipartFile image
-    ) throws UniqueConstraintException, IOException {
-        Smartphone smartphone = Smartphone.builder()
-                .name(name)
-                .brand(
-                        Brand.builder()
-                                .id(brandId)
-                                .build()
-                )
-                .price(price)
-                .quantityInStock(quantityInStock)
-                .screen(screen)
-                .operatingSystem(operatingSystem)
-                .rearCamera(rearCamera)
-                .frontCamera(frontCamera)
-                .chip(chip)
-                .ram(ram)
-                .storageCapacity(storageCapacity)
-                .sim(sim)
-                .pin(pin)
-                .sku(sku)
-                .build();
+        @RequestBody Smartphone smartphone
+    ) throws UniqueConstraintException, DataNotFoundException {
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        smartphoneService.saveSmartphone(smartphone, image)
+                        smartphoneService.saveSmartphone(smartphone)
                 );
     }
 
