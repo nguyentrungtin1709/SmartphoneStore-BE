@@ -69,6 +69,35 @@ public class AuthenticationServiceImplement implements AuthenticationService {
     }
 
     @Override
+    public TokenResponse register(RegisterRequest request, Role role) throws UniqueConstraintException {
+        boolean hasEmail = accountDetailsService.wasRegisteredEmail(request.getEmail());
+        boolean hasPhone = accountDetailsService.wasRegisteredPhone(request.getPhone());
+        if (hasPhone || hasEmail){
+            Map<String, String> columns = new HashMap<>();
+            if (hasPhone){
+                columns.put("phone", "Số điện thoại đã được đăng kí");
+            }
+            if (hasEmail){
+                columns.put("email", "Email đã được đăng kí");
+            }
+            throw new UniqueConstraintException(columns);
+        }
+        Account account = Account
+                .builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(
+                        passwordEncoder.encode(request.getPassword())
+                )
+                .role(role)
+                .phone(request.getPhone())
+                .build();
+        account = accountDetailsService.saveAccount(account);
+        String token = jsonWebTokenService.generateToken(account);
+        return new TokenResponse(account, token);
+    }
+
+    @Override
     public TokenResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

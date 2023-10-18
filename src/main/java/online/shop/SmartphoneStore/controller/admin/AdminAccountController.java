@@ -3,6 +3,7 @@ package online.shop.SmartphoneStore.controller.admin;
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.Enum.OrderStatus;
+import online.shop.SmartphoneStore.entity.Enum.Role;
 import online.shop.SmartphoneStore.entity.Order;
 import online.shop.SmartphoneStore.entity.payload.ProfileChanging;
 import online.shop.SmartphoneStore.entity.payload.RegisterRequest;
@@ -111,13 +112,14 @@ public class AdminAccountController {
 
     @PostMapping
     public ResponseEntity<TokenResponse> createAccount(
-            @Valid @RequestBody RegisterRequest request
+            @Valid @RequestBody RegisterRequest request,
+            @RequestParam(value = "role", defaultValue = "CUSTOMER") Role role
     ) throws UniqueConstraintException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        authenticationService.register(request)
+                        authenticationService.register(request, role)
                 );
     }
 

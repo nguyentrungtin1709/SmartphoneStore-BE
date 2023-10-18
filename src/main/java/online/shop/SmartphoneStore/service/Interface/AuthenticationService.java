@@ -1,6 +1,7 @@
 package online.shop.SmartphoneStore.service.Interface;
 
 import online.shop.SmartphoneStore.entity.Account;
+import online.shop.SmartphoneStore.entity.Enum.Role;
 import online.shop.SmartphoneStore.entity.payload.PasswordChanging;
 import online.shop.SmartphoneStore.entity.payload.TokenResponse;
 import online.shop.SmartphoneStore.entity.payload.LoginRequest;
@@ -9,6 +10,8 @@ import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 
 public interface AuthenticationService {
     TokenResponse register(RegisterRequest request) throws UniqueConstraintException;
+
+    TokenResponse register(RegisterRequest request, Role role) throws UniqueConstraintException;
 
     TokenResponse login(LoginRequest request);
 
