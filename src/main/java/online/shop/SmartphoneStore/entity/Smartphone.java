@@ -53,12 +53,12 @@ public class Smartphone {
 
     @NotNull(message = "Không được bỏ trống")
     @Positive(message = "Giá bán cần lớn hơn 0")
-    @Column(name = "gia_ban")
+    @Column(name = "gia_ban", nullable = false)
     private Integer price;
 
     @NotNull(message = "Không được bỏ trống")
     @PositiveOrZero(message = "Số lượng cần lớn hơn hoặc bằng 0")
-    @Column(name = "so_luong")
+    @Column(name = "so_luong", nullable = false)
     private Integer quantityInStock;
 
     @Column(name = "man_hinh")
