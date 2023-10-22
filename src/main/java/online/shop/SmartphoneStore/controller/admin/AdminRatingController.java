@@ -33,6 +33,18 @@ public class AdminRatingController {
                 );
     }
 
+    @GetMapping("/{ratingId}")
+    public ResponseEntity<Rating> readRatingById(
+            @PathVariable("ratingId") Long ratingId
+    ) throws DataNotFoundException {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        ratingService.readRatingById(ratingId)
+                );
+    }
+
     @DeleteMapping("/{ratingId}")
     public ResponseEntity<Map<String, String>> deleteRatingById(
             @PathVariable("ratingId") Long ratingId

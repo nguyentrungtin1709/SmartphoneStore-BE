@@ -27,4 +27,6 @@ public interface RatingService {
 
     Rating readRatingOfAccountById(Account account, Long ratingId) throws DataNotFoundException;
 
+    Rating readRatingById(Long ratingId) throws DataNotFoundException;
+
 }

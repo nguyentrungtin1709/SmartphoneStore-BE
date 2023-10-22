@@ -149,4 +149,11 @@ public class RatingServiceImplement implements RatingService {
                 ratingId
         ).orElseThrow(() -> new DataNotFoundException("Không tìm thấy đánh giá"));
     }
+
+    @Override
+    public Rating readRatingById(Long ratingId) throws DataNotFoundException {
+        return ratingRepository
+                .findById(ratingId)
+                .orElseThrow(() -> new DataNotFoundException("Không tìm thấy đánh giá"));
+    }
 }

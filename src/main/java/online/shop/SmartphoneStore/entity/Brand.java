@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -34,6 +36,10 @@ public class Brand {
     @Length(max = 50, message = "Tên hãng không được vượt quá 50 ký tự")
     @Column(name = "ten_hang", nullable = false)
     private String name;
+
+    @CreationTimestamp
+    @Column(name = "ngay_them")
+    private LocalDateTime createdAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "brand", cascade = {CascadeType.ALL})
