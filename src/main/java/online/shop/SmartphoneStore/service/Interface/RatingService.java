@@ -7,6 +7,8 @@ import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.RatingOverLimitException;
 import org.springframework.data.domain.Page;
 
+import java.util.Map;
+
 public interface RatingService {
 
     Rating createRating(Account account, Rating rating) throws DataNotFoundException, RatingOverLimitException;
@@ -28,5 +30,11 @@ public interface RatingService {
     Rating readRatingOfAccountById(Account account, Long ratingId) throws DataNotFoundException;
 
     Rating readRatingById(Long ratingId) throws DataNotFoundException;
+
+    Map<String, Long> countAllRatings();
+
+    Map<String, Long> countAllRatingsToday();
+
+    Map<Integer, Long> countRatingsByStar();
 
 }

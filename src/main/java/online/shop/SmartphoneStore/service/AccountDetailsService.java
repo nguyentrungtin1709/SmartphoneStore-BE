@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -115,5 +116,17 @@ public class AccountDetailsService implements UserDetailsService {
 
     public Page<Account> searchAccountByEmail(String keyword, Integer page) {
         return accountRepository.searchAccountsByEmail(keyword, PageRequest.of(page, 12));
+    }
+
+    public Map<String, Long> countAllAccounts() {
+        Long count = accountRepository.count();
+        return Map.of("numberOfAccounts", count);
+    }
+
+    public Map<String, Long> countAccountsCreatedToday() {
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.of(end.getYear(), end.getMonth(), end.getDayOfMonth(), 0, 0, 0, 0);
+        Long count = accountRepository.countAccountsByCreatedAtBetween(start, end);
+        return Map.of("numberOfAccountsToday", count);
     }
 }

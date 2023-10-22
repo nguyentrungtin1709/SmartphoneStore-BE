@@ -16,8 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -177,5 +180,29 @@ public class OrderServiceImplement implements OrderService {
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy đơn hàng"));
         order.setStatus(status);
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Map<String, Long> countAllOrders() {
+        Long count = orderRepository.count();
+        return Map.of("numberOfOrders", count);
+    }
+
+    @Override
+    public Map<String, Long> countAllOrdersToday() {
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.of(end.getYear(), end.getMonth(), end.getDayOfMonth(), 0, 0, 0, 0);
+        Long count = orderRepository.countOrdersByCreatedAtBetween(start, end);
+        return Map.of("numberOfOrdersToday", count);
+    }
+
+    @Override
+    public Map<String, Long> countAllOrdersByStatus() {
+        Map<String, Long> result = new HashMap<>();
+        for (OrderStatus status : OrderStatus.values()){
+            Long count = orderRepository.countOrdersByStatus(status);
+            result.put(status.name(), count);
+        }
+        return result;
     }
 }

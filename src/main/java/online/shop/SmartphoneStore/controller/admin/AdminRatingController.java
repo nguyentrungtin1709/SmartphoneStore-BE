@@ -57,4 +57,34 @@ public class AdminRatingController {
                     Map.of("message", "Đã xóa đánh giá")
                 );
     }
+
+    @GetMapping("/number-of-ratings")
+    public ResponseEntity<Map<String, Long>> numberOfRatings(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                    ratingService.countAllRatings()
+                );
+    }
+
+    @GetMapping("/number-of-ratings-today")
+    public ResponseEntity<Map<String, Long>> numberOfRatingsToday(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                    ratingService.countAllRatingsToday()
+                );
+    }
+
+    @GetMapping("/number-of-ratings-by-star")
+    public ResponseEntity<Map<Integer, Long>> numberOfRatingsByStar(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        ratingService.countRatingsByStar()
+                );
+    }
 }

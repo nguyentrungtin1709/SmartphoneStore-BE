@@ -36,6 +36,36 @@ public class AdminOrderController {
                 );
     }
 
+    @GetMapping("/number-of-orders")
+    public ResponseEntity<Map<String, Long>> numberOfOrders(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                    orderService.countAllOrders()
+                );
+    }
+
+    @GetMapping("/number-of-orders-today")
+    public ResponseEntity<Map<String, Long>> numberOfOrdersToday(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        orderService.countAllOrdersToday()
+                );
+    }
+
+    @GetMapping("/number-of-orders-by-status")
+    public ResponseEntity<Map<String, Long>> numberOfOrdersByStatus(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        orderService.countAllOrdersByStatus()
+                );
+    }
+
     @GetMapping("/status/{status}")
     public ResponseEntity<Page<Order>> readOrdersByStatus(
             @RequestParam(value = "page", defaultValue = "0") Integer page,

@@ -1,11 +1,13 @@
 package online.shop.SmartphoneStore.repository;
 
+import online.shop.SmartphoneStore.entity.Enum.Star;
 import online.shop.SmartphoneStore.entity.Rating;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +25,9 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     List<Rating> findRatingsBySmartphone_Id(Long smartphoneId);
 
     Optional<Rating> findRatingByAccount_IdAndId(Long accountId, Long ratingId);
+
+    Long countRatingsByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    Long countRatingsByStar(Star star);
 
 }

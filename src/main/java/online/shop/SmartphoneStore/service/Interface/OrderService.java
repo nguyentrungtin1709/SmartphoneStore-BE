@@ -6,6 +6,8 @@ import online.shop.SmartphoneStore.entity.Order;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import org.springframework.data.domain.Page;
 
+import java.util.Map;
+
 public interface OrderService {
 
     Order createOrder(Order order, Account account);
@@ -25,4 +27,11 @@ public interface OrderService {
     void deleteOrderById(Long orderId) throws DataNotFoundException;
 
     Order updateStatusOfOrderById(Long orderId, OrderStatus status) throws DataNotFoundException;
+
+    Map<String, Long> countAllOrders();
+
+    Map<String, Long> countAllOrdersToday();
+
+    Map<String, Long> countAllOrdersByStatus();
+
 }

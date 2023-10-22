@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,5 +156,29 @@ public class RatingServiceImplement implements RatingService {
         return ratingRepository
                 .findById(ratingId)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy đánh giá"));
+    }
+
+    @Override
+    public Map<String, Long> countAllRatings() {
+        Long count = ratingRepository.count();
+        return Map.of("numberOfRatings", count);
+    }
+
+    @Override
+    public Map<String, Long> countAllRatingsToday() {
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.of(end.getYear(), end.getMonth(), end.getDayOfMonth(), 0, 0, 0, 0);
+        Long count = ratingRepository.countRatingsByCreatedAtBetween(start, end);
+        return Map.of("numberOfRatingsToday", count);
+    }
+
+    @Override
+    public Map<Integer, Long> countRatingsByStar() {
+        Map<Integer, Long> result = new HashMap<>();
+        for (Star star : Star.values()){
+            Long count = ratingRepository.countRatingsByStar(star);
+            result.put(star.ordinal() + 1, count);
+        }
+        return result;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +21,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findAllByOrderByCreatedAtDesc(PageRequest page);
 
     Page<Order> findOrdersByStatusOrderByCreatedAtDesc(OrderStatus status, PageRequest page);
+
+    Long countOrdersByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    Long countOrdersByStatus(OrderStatus status);
 }

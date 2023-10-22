@@ -1,10 +1,6 @@
 package online.shop.SmartphoneStore.controller.admin;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import online.shop.SmartphoneStore.entity.Brand;
 import online.shop.SmartphoneStore.entity.Smartphone;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
@@ -19,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/admin/smartphones")
@@ -79,6 +77,38 @@ public class AdminSmartphoneController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                         smartphoneService.updateInfo(smartphoneId, smartphone)
+                );
+    }
+
+    @GetMapping("/number-of-smartphones")
+    public ResponseEntity<Map<String, Long>> numberOfSmartphones(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                    smartphoneService.countAllSmartphones()
+                );
+    }
+
+    @GetMapping("/best-sellers")
+    public ResponseEntity<List<Smartphone>> findBestSellers(
+            @RequestParam(value = "top", defaultValue = "10") Integer top
+    ){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        smartphoneService.findBestSellers(top)
+                );
+    }
+
+    @GetMapping("/number-of-smartphones-by-brand")
+    public ResponseEntity<Map<String, Long>> numberOfSmartphonesByBrand(){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        smartphoneService.countAllSmartphonesByBrand()
                 );
     }
 

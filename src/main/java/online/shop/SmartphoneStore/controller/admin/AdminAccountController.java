@@ -57,6 +57,26 @@ public class AdminAccountController {
                 );
     }
 
+    @GetMapping("/number-of-accounts")
+    public ResponseEntity<Map<String, Long>> numberOfAccounts (){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        accountDetailsService.countAllAccounts()
+                );
+    }
+
+    @GetMapping("/number-of-accounts-today")
+    public ResponseEntity<Map<String, Long>> numberOfAccountsToday (){
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
+                        accountDetailsService.countAccountsCreatedToday()
+                );
+    }
+
     @GetMapping("/{accountId}")
     public ResponseEntity<Account> readAccountById(
             @PathVariable("accountId") Long accountId

@@ -262,4 +262,28 @@ public class SmartphoneServiceImplement implements SmartphoneService {
         return smartphone;
     }
 
+    @Override
+    public Map<String, Long> countAllSmartphones() {
+        Long total = smartphoneRepository.count();
+        return Map.of("numberOfSmartphones", total);
+    }
+
+    @Override
+    public Map<String, Long> countAllSmartphonesByBrand() {
+        List<Brand> brands = brandRepository.findAll();
+        Map<String, Long> result = new HashMap<>();
+        for (Brand brand : brands) {
+            String brandName = brand.getName();
+            result.put(
+                    brandName,
+                    smartphoneRepository.countSmartphonesByBrand_Name(brandName)
+            );
+        }
+        return result;
+    }
+
+    @Override
+    public List<Smartphone> findBestSellers(Integer top) {
+        return smartphoneRepository.findTopSmartphoneBestSellers(top);
+    }
 }
