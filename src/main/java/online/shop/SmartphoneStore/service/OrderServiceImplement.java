@@ -16,7 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -197,11 +200,34 @@ public class OrderServiceImplement implements OrderService {
     }
 
     @Override
-    public Map<String, Long> countAllOrdersByStatus() {
-        Map<String, Long> result = new HashMap<>();
+    public List<Map<String, String>> countAllOrdersByStatus() {
+        List<Map<String, String>> list = new ArrayList<>();
         for (OrderStatus status : OrderStatus.values()){
+            Map<String, String> result = new HashMap<>();
             Long count = orderRepository.countOrdersByStatus(status);
-            result.put(status.name(), count);
+            result.put("status", status.name());
+            result.put("quantity", count.toString());
+            list.add(result);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Map<String, String>> getSalesStatistic() {
+        List<Map<String, String>> result = new ArrayList<>();
+        int year = LocalDateTime.now().getYear();
+        for (Month month : Month.values()){
+            Map<String, String> sales_statistic = new HashMap<>();
+            LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0, 0);
+            LocalDateTime end = start.with(TemporalAdjusters.lastDayOfMonth());
+            List<Order> orderList = orderRepository.findOrdersByCreatedAtBetweenAndStatus(start, end, OrderStatus.COMPLETED);
+            Long totalOfMonth = orderList
+                    .stream()
+                    .mapToLong(Order::getTotal)
+                    .sum();
+            sales_statistic.put("month", month.name());
+            sales_statistic.put("total", totalOfMonth.toString());
+            result.add(sales_statistic);
         }
         return result;
     }

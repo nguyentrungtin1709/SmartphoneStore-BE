@@ -79,7 +79,7 @@ public class AdminRatingController {
     }
 
     @GetMapping("/number-of-ratings-by-star")
-    public ResponseEntity<Map<Integer, Long>> numberOfRatingsByStar(){
+    public ResponseEntity<Map<String, Long>> numberOfRatingsByStar(){
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

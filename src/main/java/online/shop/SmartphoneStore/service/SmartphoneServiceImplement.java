@@ -269,15 +269,19 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
-    public Map<String, Long> countAllSmartphonesByBrand() {
+    public List<Map<String, String>> countAllSmartphonesByBrand() {
         List<Brand> brands = brandRepository.findAll();
-        Map<String, Long> result = new HashMap<>();
+        List<Map<String, String>> result = new ArrayList<>();
         for (Brand brand : brands) {
-            String brandName = brand.getName();
-            result.put(
-                    brandName,
-                    smartphoneRepository.countSmartphonesByBrand_Name(brandName)
+            Map<String, String> map = new HashMap<>();
+            map.put("name", brand.getName());
+            map.put(
+                    "quantity",
+                    smartphoneRepository
+                            .countSmartphonesByBrand_Name(brand.getName())
+                            .toString()
             );
+            result.add(map);
         }
         return result;
     }

@@ -38,7 +38,7 @@ public interface SmartphoneService {
 
     Map<String, Long> countAllSmartphones();
 
-    Map<String, Long> countAllSmartphonesByBrand();
+    List<Map<String, String>> countAllSmartphonesByBrand();
 
 
     List<Smartphone> findBestSellers(Integer top);

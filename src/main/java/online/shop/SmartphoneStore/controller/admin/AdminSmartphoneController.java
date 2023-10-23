@@ -103,7 +103,7 @@ public class AdminSmartphoneController {
     }
 
     @GetMapping("/number-of-smartphones-by-brand")
-    public ResponseEntity<Map<String, Long>> numberOfSmartphonesByBrand(){
+    public ResponseEntity<List<Map<String, String>>> numberOfSmartphonesByBrand(){
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

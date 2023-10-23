@@ -6,6 +6,7 @@ import online.shop.SmartphoneStore.entity.Order;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
@@ -32,6 +33,8 @@ public interface OrderService {
 
     Map<String, Long> countAllOrdersToday();
 
-    Map<String, Long> countAllOrdersByStatus();
+    List<Map<String, String>> countAllOrdersByStatus();
+
+    List<Map<String, String>> getSalesStatistic();
 
 }

@@ -173,11 +173,11 @@ public class RatingServiceImplement implements RatingService {
     }
 
     @Override
-    public Map<Integer, Long> countRatingsByStar() {
-        Map<Integer, Long> result = new HashMap<>();
+    public Map<String, Long> countRatingsByStar() {
+        Map<String, Long> result = new HashMap<>();
         for (Star star : Star.values()){
             Long count = ratingRepository.countRatingsByStar(star);
-            result.put(star.ordinal() + 1, count);
+            result.put(star.name(), count);
         }
         return result;
     }

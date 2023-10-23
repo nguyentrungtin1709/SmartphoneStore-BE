@@ -35,6 +35,6 @@ public interface RatingService {
 
     Map<String, Long> countAllRatingsToday();
 
-    Map<Integer, Long> countRatingsByStar();
+    Map<String, Long> countRatingsByStar();
 
 }
