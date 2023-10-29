@@ -29,8 +29,9 @@ public class OrderDetails {
     @Column(name = "ma_so")
     private Long id;
 
-    @ManyToOne
+
     @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "ma_don_hang", nullable = false)
     private Order order;
 
