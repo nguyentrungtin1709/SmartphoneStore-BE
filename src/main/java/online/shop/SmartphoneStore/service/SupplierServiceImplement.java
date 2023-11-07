@@ -6,11 +6,11 @@ import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.repository.SupplierRepository;
 import online.shop.SmartphoneStore.service.Interface.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -35,8 +35,11 @@ public class SupplierServiceImplement implements SupplierService {
     }
 
     @Override
-    public List<Supplier> readAllSuppliers() {
-        return supplierRepository.findAll(Sort.by("name"));
+    public Page<Supplier> readAllSuppliers(Integer page) {
+        return supplierRepository
+                .findAllByOrderByCreatedAtDesc(
+                    PageRequest.of(page, 12)
+                );
     }
 
     @Override

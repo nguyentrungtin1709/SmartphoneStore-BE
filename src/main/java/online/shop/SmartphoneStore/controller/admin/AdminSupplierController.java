@@ -7,6 +7,7 @@ import online.shop.SmartphoneStore.exception.custom.UniqueConstraintException;
 import online.shop.SmartphoneStore.service.Interface.SupplierService;
 import online.shop.SmartphoneStore.service.SupplierServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +39,14 @@ public class AdminSupplierController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Supplier>> readAllSuppliers(){
+    public ResponseEntity<Page<Supplier>> readAllSuppliers(
+            @RequestParam(value = "page", defaultValue = "0") Integer page
+    ){
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        supplierService.readAllSuppliers()
+                        supplierService.readAllSuppliers(page)
                 );
     }
 

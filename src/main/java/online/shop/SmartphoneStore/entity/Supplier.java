@@ -9,8 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -46,6 +48,10 @@ public class Supplier {
     @Pattern(regexp = "(0[3|5|7|8|9])+([0-9]{8})\\b", message = "Số điện thoại không hợp lệ")
     @Column(name = "so_dien_thoai", length = 10, nullable = false)
     private String phone;
+
+    @CreationTimestamp
+    @Column(name = "ngay_tao")
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "supplier")
     @JsonIgnore
