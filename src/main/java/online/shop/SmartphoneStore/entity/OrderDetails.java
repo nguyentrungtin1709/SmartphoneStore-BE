@@ -31,7 +31,7 @@ public class OrderDetails {
 
 
     @JsonIgnore
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "ma_don_hang", nullable = false)
     private Order order;
 

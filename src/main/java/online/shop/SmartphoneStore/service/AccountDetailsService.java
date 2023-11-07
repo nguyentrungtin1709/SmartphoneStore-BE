@@ -77,7 +77,7 @@ public class AccountDetailsService implements UserDetailsService {
     public Account updatePhone(Long id, String phone) throws UniqueConstraintException {
         Account account = accountRepository
                 .findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new UsernameNotFoundException("Tài khoản không tồn tại"));
         if (wasRegisteredPhone(phone) && !phone.equals(account.getPhone())){
             throw new UniqueConstraintException(Map.of("phone", "Số điện thoại đã tồn tại"));
         }

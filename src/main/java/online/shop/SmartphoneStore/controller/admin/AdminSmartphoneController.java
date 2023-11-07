@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/admin/smartphones")
-@Validated
 public class AdminSmartphoneController {
 
     private final SmartphoneService smartphoneService;
