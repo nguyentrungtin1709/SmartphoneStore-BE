@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.service;
 
+import jakarta.annotation.PostConstruct;
 import online.shop.SmartphoneStore.entity.FileStorage;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.repository.FileStorageRepository;
@@ -31,6 +32,15 @@ public class FileStorageServiceImplement implements FileStorageService {
     @Autowired
     public FileStorageServiceImplement(FileStorageRepository fileStorageRepository) {
         this.fileStorageRepository = fileStorageRepository;
+    }
+
+    @PostConstruct
+    public void postConstruct() throws IOException {
+        Path folerPath = Path.of(FOLDER_PATH);
+        boolean exist =  Files.exists(folerPath);
+        if (!exist){
+            Files.createDirectory(folerPath);
+        }
     }
 
     @Override
@@ -76,9 +86,13 @@ public class FileStorageServiceImplement implements FileStorageService {
         FileStorage fileStorage = fileStorageRepository
                 .findById(uuid)
                 .orElseThrow(() -> new DataNotFoundException("File không tồn tại trong hệ thống"));
+        Path filePath = getFilePath(fileStorage.getUuid(), fileStorage.getName());
+        if (!Files.exists(filePath)){
+            throw new DataNotFoundException("File không tồn tại trong hệ thống");
+        }
         return new ByteArrayResource(
                 Files.readAllBytes(
-                    getFilePath(fileStorage.getUuid(), fileStorage.getName())
+                    filePath
                 ),
                 fileStorage.getContentType()
         );
