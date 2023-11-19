@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Account;
 import online.shop.SmartphoneStore.entity.payload.*;
@@ -47,16 +48,20 @@ public class AccountProfileController {
     @PutMapping("/avatar")
     public ResponseEntity<Account> updateImage(
             @CurrentSecurityContext SecurityContext securityContext,
-            @RequestParam("avatar") MultipartFile file
+            @RequestParam("avatar") MultipartFile file,
+            HttpServletRequest request
     ) throws IOException {
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
+        int index = request.getRequestURL().indexOf("v1") + 2;
+        String imagePath = request.getRequestURL().subSequence(0, index).toString().concat("/resources/");
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                         accountDetailsService.updateAvatar(
                                 account.getEmail(),
-                                file
+                                file,
+                                imagePath
                         )
                 );
     }

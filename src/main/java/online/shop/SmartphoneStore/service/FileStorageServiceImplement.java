@@ -18,14 +18,13 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
 public class FileStorageServiceImplement implements FileStorageService {
 
-    private final String FOLDER_PATH = "C:\\Users\\AD\\Desktop\\Image";
-
-    private final String RESOURCES_URL = "http://localhost:8080/api/v1/resources/";
+    private final String FOLDER_PATH = Path.of("../Image").toAbsolutePath().normalize().toString();
 
     private final FileStorageRepository fileStorageRepository;
 
@@ -45,7 +44,7 @@ public class FileStorageServiceImplement implements FileStorageService {
 
     @Override
     @Transactional(rollbackFor = {NoSuchFileException.class})
-    public URI uploadFile(MultipartFile file) throws IOException {
+    public URI uploadFile(MultipartFile file, String RESOURCES_URL) throws IOException {
         FileStorage fileStorage = fileStorageRepository.save(
           FileStorage
                   .builder()

@@ -31,7 +31,7 @@ public interface SmartphoneService {
 
     void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException, IOException;
 
-    Smartphone updateImage(Long smartphoneId, MultipartFile image)
+    Smartphone updateImage(Long smartphoneId, MultipartFile image, String imagePath)
             throws DataNotFoundException, IOException;
 
     Smartphone updateInfo(Long smartphoneId, Smartphone smartphone) throws DataNotFoundException, UniqueConstraintException;

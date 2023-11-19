@@ -1,5 +1,6 @@
 package online.shop.SmartphoneStore.controller.admin;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import online.shop.SmartphoneStore.entity.Smartphone;
 import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
@@ -57,13 +58,16 @@ public class AdminSmartphoneController {
     @PutMapping("/{smartphoneId}/image")
     public ResponseEntity<Smartphone> updateImage(
             @PathVariable("smartphoneId") Long smartphoneId,
-            @RequestParam("image") MultipartFile image
+            @RequestParam("image") MultipartFile image,
+            HttpServletRequest request
     ) throws DataNotFoundException, IOException {
+        int index = request.getRequestURL().indexOf("v1") + 2;
+        String imagePath = request.getRequestURL().subSequence(0, index).toString().concat("/resources/");
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        smartphoneService.updateImage(smartphoneId, image)
+                        smartphoneService.updateImage(smartphoneId, image, imagePath)
                 );
     }
 

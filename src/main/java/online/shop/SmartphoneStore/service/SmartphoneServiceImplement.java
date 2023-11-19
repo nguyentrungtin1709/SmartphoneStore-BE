@@ -148,7 +148,7 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
-    public Smartphone updateImage(Long smartphoneId, MultipartFile image) throws DataNotFoundException, IOException {
+    public Smartphone updateImage(Long smartphoneId, MultipartFile image, String imagePath) throws DataNotFoundException, IOException {
         Smartphone smartphone = smartphoneRepository
                 .findById(smartphoneId)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy điện thoại"));
@@ -161,7 +161,7 @@ public class SmartphoneServiceImplement implements SmartphoneService {
             );
             fileStorageService.removeFile(uuid);
         }
-        URI imageUrl = fileStorageService.uploadFile(image);
+        URI imageUrl = fileStorageService.uploadFile(image, imagePath);
         smartphone.setImageUrl(imageUrl);
         return smartphoneRepository.save(smartphone);
     }

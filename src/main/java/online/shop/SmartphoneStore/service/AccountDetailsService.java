@@ -48,7 +48,7 @@ public class AccountDetailsService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
-    public Account updateAvatar(String email, MultipartFile file) throws IOException {
+    public Account updateAvatar(String email, MultipartFile file, String imagePath) throws IOException {
         Account account = accountRepository
                 .findAccountByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Tài khoản không tồn tại"));
@@ -61,7 +61,7 @@ public class AccountDetailsService implements UserDetailsService {
             );
             fileStorageService.removeFile(uuid);
         }
-        URI imageUrl = fileStorageService.uploadFile(file);
+        URI imageUrl = fileStorageService.uploadFile(file, imagePath);
         account.setImageUrl(imageUrl);
         return accountRepository.save(account);
     }

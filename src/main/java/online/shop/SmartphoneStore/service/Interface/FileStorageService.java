@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface FileStorageService {
 
-    URI uploadFile(MultipartFile file) throws IOException;
+    URI uploadFile(MultipartFile file, String RESOURCES_URL) throws IOException;
 
     void removeFile(UUID uuid) throws IOException;
 
