@@ -9,7 +9,6 @@ import lombok.*;
 import online.shop.SmartphoneStore.entity.Enum.Gender;
 import online.shop.SmartphoneStore.entity.Enum.Role;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

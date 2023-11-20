@@ -2,7 +2,6 @@ package online.shop.SmartphoneStore.entity.payload;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 @Setter
 @Getter

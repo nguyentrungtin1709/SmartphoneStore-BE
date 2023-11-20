@@ -2,7 +2,6 @@ package online.shop.SmartphoneStore.controller;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import online.shop.SmartphoneStore.entity.Enum.Sort;
 import online.shop.SmartphoneStore.entity.Smartphone;

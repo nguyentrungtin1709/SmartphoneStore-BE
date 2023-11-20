@@ -18,13 +18,12 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
 public class FileStorageServiceImplement implements FileStorageService {
 
-    private final String FOLDER_PATH = Path.of("../Image").toAbsolutePath().normalize().toString();
+    private final String FOLDER_PATH = Path.of("./Image").toAbsolutePath().normalize().toString();
 
     private final FileStorageRepository fileStorageRepository;
 
