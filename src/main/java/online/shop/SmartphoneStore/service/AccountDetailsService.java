@@ -17,9 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class AccountDetailsService implements UserDetailsService {
@@ -48,20 +48,16 @@ public class AccountDetailsService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
-    public Account updateAvatar(String email, MultipartFile file, String imagePath) throws IOException {
+    public Account updateAvatar(String email, MultipartFile file) throws IOException, URISyntaxException {
         Account account = accountRepository
                 .findAccountByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Tài khoản không tồn tại"));
         if (account.getImageUrl() != null){
             String path = account.getImageUrl().getPath();
-            UUID uuid = UUID.fromString(
-                    path.substring(
-                            path.lastIndexOf("/") + 1
-                    )
-            );
-            fileStorageService.removeFile(uuid);
+            String fileName = path.substring(path.lastIndexOf("/") + 1);
+            fileStorageService.removeFile(fileName);
         }
-        URI imageUrl = fileStorageService.uploadFile(file, imagePath);
+        URI imageUrl = fileStorageService.uploadFile(file);
         account.setImageUrl(imageUrl);
         return accountRepository.save(account);
     }

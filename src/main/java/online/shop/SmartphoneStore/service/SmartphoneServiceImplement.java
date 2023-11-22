@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 @Service
@@ -131,37 +132,29 @@ public class SmartphoneServiceImplement implements SmartphoneService {
     }
 
     @Override
-    public void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException, IOException {
+    public void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException, IOException, URISyntaxException {
         Smartphone smartphone = smartphoneRepository
                 .findById(smartphoneId)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy điện thoại"));
         if (smartphone.getImageUrl() != null){
             String path = smartphone.getImageUrl().getPath();
-            UUID uuid = UUID.fromString(
-                    path.substring(
-                            path.lastIndexOf("/") + 1
-                    )
-            );
-            fileStorageService.removeFile(uuid);
+            String fileName = path.substring(path.lastIndexOf("/") + 1);
+            fileStorageService.removeFile(fileName);
         };
         smartphoneRepository.deleteById(smartphoneId);
     }
 
     @Override
-    public Smartphone updateImage(Long smartphoneId, MultipartFile image, String imagePath) throws DataNotFoundException, IOException {
+    public Smartphone updateImage(Long smartphoneId, MultipartFile image) throws DataNotFoundException, IOException, URISyntaxException {
         Smartphone smartphone = smartphoneRepository
                 .findById(smartphoneId)
                 .orElseThrow(() -> new DataNotFoundException("Không tìm thấy điện thoại"));
         if (smartphone.getImageUrl() != null){
             String path = smartphone.getImageUrl().getPath();
-            UUID uuid = UUID.fromString(
-                    path.substring(
-                            path.lastIndexOf("/") + 1
-                    )
-            );
-            fileStorageService.removeFile(uuid);
+            String fileName = path.substring(path.lastIndexOf("/") + 1);
+            fileStorageService.removeFile(fileName);
         }
-        URI imageUrl = fileStorageService.uploadFile(image, imagePath);
+        URI imageUrl = fileStorageService.uploadFile(image);
         smartphone.setImageUrl(imageUrl);
         return smartphoneRepository.save(smartphone);
     }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,10 +30,10 @@ public interface SmartphoneService {
 
     Smartphone readSmartphoneById(Long smartphoneId) throws DataNotFoundException;
 
-    void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException, IOException;
+    void deleteSmartphoneById(Long smartphoneId) throws DataNotFoundException, IOException, URISyntaxException;
 
-    Smartphone updateImage(Long smartphoneId, MultipartFile image, String imagePath)
-            throws DataNotFoundException, IOException;
+    Smartphone updateImage(Long smartphoneId, MultipartFile image)
+            throws DataNotFoundException, IOException, URISyntaxException;
 
     Smartphone updateInfo(Long smartphoneId, Smartphone smartphone) throws DataNotFoundException, UniqueConstraintException;
 

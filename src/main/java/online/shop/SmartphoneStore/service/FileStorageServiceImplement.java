@@ -1,49 +1,44 @@
 package online.shop.SmartphoneStore.service;
 
-import jakarta.annotation.PostConstruct;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import online.shop.SmartphoneStore.entity.FileStorage;
-import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
 import online.shop.SmartphoneStore.repository.FileStorageRepository;
 import online.shop.SmartphoneStore.service.Interface.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
+import java.net.URISyntaxException;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
 import java.util.UUID;
 
 @Service
 public class FileStorageServiceImplement implements FileStorageService {
 
-    private final String FOLDER_PATH = Path.of("./image").toAbsolutePath().normalize().toString();
+    private final AmazonS3 s3Client;
 
     private final FileStorageRepository fileStorageRepository;
 
-    @Autowired
-    public FileStorageServiceImplement(FileStorageRepository fileStorageRepository) {
-        this.fileStorageRepository = fileStorageRepository;
-    }
+    @Value("${cloud.s3.bucket.name}")
+    private String bucketName;
 
-    @PostConstruct
-    public void postConstruct() throws IOException {
-        Path folerPath = Path.of(FOLDER_PATH);
-        boolean exist =  Files.exists(folerPath);
-        if (!exist){
-            Files.createDirectory(folerPath);
-        }
+    @Autowired
+    public FileStorageServiceImplement(AmazonS3 s3Client, FileStorageRepository fileStorageRepository) {
+        this.s3Client = s3Client;
+        this.fileStorageRepository = fileStorageRepository;
     }
 
     @Override
     @Transactional(rollbackFor = {NoSuchFileException.class})
-    public URI uploadFile(MultipartFile file, String RESOURCES_URL) throws IOException {
+    public URI uploadFile(MultipartFile file) throws URISyntaxException {
         FileStorage fileStorage = fileStorageRepository.save(
           FileStorage
                   .builder()
@@ -52,58 +47,35 @@ public class FileStorageServiceImplement implements FileStorageService {
                   .size(file.getSize())
                   .build()
         );
-        file.transferTo(
-                getFilePath(
-                        fileStorage.getUuid(),
-                        file.getOriginalFilename()
-                )
-        );
-        return URI.create(
-                RESOURCES_URL.concat(
-                    fileStorage.getUuid().toString()
-                )
-        );
+        File object = convertMultiPartFileToFile(file);
+        String fileName = getFileName(fileStorage.getUuid(), fileStorage.getName());
+        s3Client.putObject(new PutObjectRequest(bucketName, fileName, object));
+        boolean isDeleted = object.delete();
+        return s3Client.getUrl(bucketName, fileName).toURI();
     }
 
     @Override
-    public void removeFile(UUID uuid) throws IOException {
-        FileStorage fileStorage = fileStorageRepository
-                .findById(uuid)
-                .orElseThrow();
-        Files.deleteIfExists(
-                getFilePath(
-                        fileStorage.getUuid(),
-                        fileStorage.getName()
-                )
-        );
+    public void removeFile(String fileName) throws URISyntaxException {
+        s3Client.deleteObject(bucketName, fileName);
+        UUID uuid = UUID.fromString(fileName.substring(0, fileName.lastIndexOf(".")));
         fileStorageRepository.deleteById(uuid);
     }
 
-    @Override
-    public Resource getFile(UUID uuid) throws IOException, DataNotFoundException {
-        FileStorage fileStorage = fileStorageRepository
-                .findById(uuid)
-                .orElseThrow(() -> new DataNotFoundException("File không tồn tại trong hệ thống"));
-        Path filePath = getFilePath(fileStorage.getUuid(), fileStorage.getName());
-        if (!Files.exists(filePath)){
-            throw new DataNotFoundException("File không tồn tại trong hệ thống");
+    private File convertMultiPartFileToFile(MultipartFile file) {
+        File convertedFile = new File(file.getOriginalFilename());
+        try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
+            fos.write(file.getBytes());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-        return new ByteArrayResource(
-                Files.readAllBytes(
-                    filePath
-                ),
-                fileStorage.getContentType()
-        );
+        return convertedFile;
     }
 
-    public Path getFilePath(UUID uuid, String originalFilename){
-        String fileName = uuid.toString()
+    public String getFileName(UUID uuid, String originalFilename){
+        return uuid.toString()
                 .concat(
                         getExtensionFromFileName(originalFilename)
                 );
-        return Path.of(
-                FOLDER_PATH.concat("\\").concat(fileName)
-        );
     }
 
     private String getExtensionFromFileName(String name){

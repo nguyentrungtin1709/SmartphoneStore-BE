@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/api/v1/account/profile")
@@ -48,20 +49,16 @@ public class AccountProfileController {
     @PutMapping("/avatar")
     public ResponseEntity<Account> updateImage(
             @CurrentSecurityContext SecurityContext securityContext,
-            @RequestParam("avatar") MultipartFile file,
-            HttpServletRequest request
-    ) throws IOException {
+            @RequestParam("avatar") MultipartFile file
+    ) throws IOException, URISyntaxException {
         Account account = (Account) securityContext.getAuthentication().getPrincipal();
-        int index = request.getRequestURL().indexOf("v1") + 2;
-        String imagePath = request.getRequestURL().subSequence(0, index).toString().concat("/resources/");
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
                         accountDetailsService.updateAvatar(
                                 account.getEmail(),
-                                file,
-                                imagePath
+                                file
                         )
                 );
     }

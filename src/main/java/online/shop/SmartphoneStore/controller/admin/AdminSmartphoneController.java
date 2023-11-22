@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class AdminSmartphoneController {
     @DeleteMapping("/{smartphoneId}")
     public ResponseEntity<Object> deleteSmartphoneById(
             @PathVariable("smartphoneId") Long smartphoneId
-    ) throws DataNotFoundException, IOException {
+    ) throws DataNotFoundException, IOException, URISyntaxException {
         smartphoneService.deleteSmartphoneById(smartphoneId);
         return ResponseEntity
                 .ok()
@@ -58,16 +59,13 @@ public class AdminSmartphoneController {
     @PutMapping("/{smartphoneId}/image")
     public ResponseEntity<Smartphone> updateImage(
             @PathVariable("smartphoneId") Long smartphoneId,
-            @RequestParam("image") MultipartFile image,
-            HttpServletRequest request
-    ) throws DataNotFoundException, IOException {
-        int index = request.getRequestURL().indexOf("v1") + 2;
-        String imagePath = request.getRequestURL().subSequence(0, index).toString().concat("/resources/");
+            @RequestParam("image") MultipartFile image
+    ) throws DataNotFoundException, IOException, URISyntaxException {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(
-                        smartphoneService.updateImage(smartphoneId, image, imagePath)
+                        smartphoneService.updateImage(smartphoneId, image)
                 );
     }
 

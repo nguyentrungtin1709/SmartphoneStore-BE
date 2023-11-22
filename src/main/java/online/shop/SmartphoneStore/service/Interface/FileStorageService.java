@@ -1,19 +1,15 @@
 package online.shop.SmartphoneStore.service.Interface;
 
-import online.shop.SmartphoneStore.exception.custom.DataNotFoundException;
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.UUID;
+import java.net.URISyntaxException;
 
 public interface FileStorageService {
 
-    URI uploadFile(MultipartFile file, String RESOURCES_URL) throws IOException;
+    URI uploadFile(MultipartFile file) throws IOException, URISyntaxException;
 
-    void removeFile(UUID uuid) throws IOException;
-
-    Resource getFile(UUID uuid) throws IOException, DataNotFoundException;
+    void removeFile(String fileName) throws IOException, URISyntaxException;
 
 }
